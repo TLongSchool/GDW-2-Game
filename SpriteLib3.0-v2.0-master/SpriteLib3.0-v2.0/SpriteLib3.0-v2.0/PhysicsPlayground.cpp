@@ -611,7 +611,7 @@ void PhysicsPlayground::KeyboardHold()
 	{
 		if (canJump.m_canJump == false)
 		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(-200000.f * speed, 0.f), true);
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-200000.f * speed, -100000.f), true);
 		}
 		else
 		{
@@ -621,9 +621,9 @@ void PhysicsPlayground::KeyboardHold()
 	}
 	if (Input::GetKey(Key::D))
 	{
-		if (canJump.m_canJump == true)
+		if (canJump.m_canJump == false)
 		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(200000.f * speed, 0.f), true);
+			player.GetBody()->ApplyForceToCenter(b2Vec2(200000.f * speed, -100000.f), true);
 		}
 		else
 		{
