@@ -1,9 +1,9 @@
-#include "PhysicsPlayground.h"
+#include "CartCraze.h"
 #include "Utilities.h"
 
 #include <random>
 
-PhysicsPlayground::PhysicsPlayground(std::string name)
+CartCraze::CartCraze(std::string name)
 	: Scene(name)
 {
 	//No gravity this is a top down scene
@@ -13,7 +13,7 @@ PhysicsPlayground::PhysicsPlayground(std::string name)
 	m_physicsWorld->SetContactListener(&listener);
 }
 
-void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
+void CartCraze::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
@@ -81,6 +81,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<CanJump>(entity);
+		ECS::AttachComponent<PlayerFacing>(entity);
 
 		//Sets up the components
 		std::string fileName = "LinkStandby.png";
@@ -386,12 +387,13 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
-void PhysicsPlayground::Update()
+void CartCraze::Update()
 {
-	
+	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
-void PhysicsPlayground::GUI()
+void CartCraze::GUI()
 {
 	GUIWindowUI();
 
@@ -406,7 +408,7 @@ void PhysicsPlayground::GUI()
 	}
 }
 
-void PhysicsPlayground::GUIWindowUI()
+void CartCraze::GUIWindowUI()
 {
 	ImGui::Begin("Test");
 
@@ -420,7 +422,7 @@ void PhysicsPlayground::GUIWindowUI()
 	ImGui::End();
 }
 
-void PhysicsPlayground::GUIWindowOne()
+void CartCraze::GUIWindowOne()
 {
 	//Window begin
 	ImGui::Begin("Side Docked Window");
@@ -550,7 +552,7 @@ void PhysicsPlayground::GUIWindowOne()
 	ImGui::End();
 }
 
-void PhysicsPlayground::GUIWindowTwo()
+void CartCraze::GUIWindowTwo()
 {
 	//Second docked window
 	ImGui::Begin("Second Window");
@@ -598,10 +600,10 @@ void PhysicsPlayground::GUIWindowTwo()
 
 
 
-void PhysicsPlayground::KeyboardHold()
+void CartCraze::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
+
 
 
 	float speed = 2.f;
@@ -609,26 +611,13 @@ void PhysicsPlayground::KeyboardHold()
 
 	if (Input::GetKey(Key::A))
 	{
-		if (canJump.m_canJump == false)
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(-200000.f * speed, 0.f), true);
-		}
-		else
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
-		}
-
+		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight = false;
 	}
 	if (Input::GetKey(Key::D))
 	{
-		if (canJump.m_canJump == true)
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(200000.f * speed, 0.f), true);
-		}
-		else
-		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-		}
+		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight = true;
 	}
 
 	if (Input::GetKey(Key::W))
@@ -642,7 +631,7 @@ void PhysicsPlayground::KeyboardHold()
 
 }
 
-void PhysicsPlayground::KeyboardDown()
+void CartCraze::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
@@ -663,11 +652,11 @@ void PhysicsPlayground::KeyboardDown()
 
 	if (Input::GetKeyDown(Key::E))
 	{
-
+		seedEntity = Scene::CreateSeedProjectile(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
 	}
 }
 
-void PhysicsPlayground::KeyboardUp()
+void CartCraze::KeyboardUp()
 {
 	
 

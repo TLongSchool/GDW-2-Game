@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Scene.h"
-#include "PhysicsPlaygroundListener.h"
+#include "CartCrazeListener.h"
+#include "PlayerFacing.h"
 #include <string>
 
-class PhysicsPlayground : public Scene
+class CartCraze : public Scene
 {
 public:
-	PhysicsPlayground(std::string name);
+	CartCraze(std::string name);
 
 	void InitScene(float windowWidth, float windowHeight) override;
 
@@ -31,7 +32,12 @@ protected:
 
 	std::string m_fileInput;
 
-	PhysicsPlaygroundListener listener;
+	CartCrazeListener listener;
+
+	int seedEntity = -1;
+	int peelEntity = -1;
+	int juiceEntity = -1;
+	int healthEntity = -1;
 
 	int puzzleWall1;
 	int puzzleWall2;
