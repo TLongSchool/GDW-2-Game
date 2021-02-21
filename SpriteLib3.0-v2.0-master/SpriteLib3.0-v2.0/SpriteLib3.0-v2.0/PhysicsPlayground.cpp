@@ -7,7 +7,7 @@ PhysicsPlayground::PhysicsPlayground(std::string name)
 	: Scene(name)
 {
 	//No gravity this is a top down scene
-	m_gravity = b2Vec2(0.f, -98.f);
+	m_gravity = b2Vec2(0.f, -128.f);
 	m_physicsWorld->SetGravity(m_gravity);
 
 	m_physicsWorld->SetContactListener(&listener);
@@ -84,7 +84,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 
 		//Sets up the components
 		std::string fileName = "LinkStandby.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 35, 25);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
 
@@ -109,7 +109,7 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 		tempPhsBody.SetRotationAngleDeg(0.f);
 		tempPhsBody.SetFixedRotation(true);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
-		tempPhsBody.SetGravityScale(1.f);
+		tempPhsBody.SetGravityScale(1.4f);
 	}
 
 	//Setup static Top Platform
@@ -601,39 +601,52 @@ void PhysicsPlayground::GUIWindowTwo()
 void PhysicsPlayground::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 
-	float speed = 1.f;
+
+	float speed = 2.f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
-
-	if (Input::GetKey(Key::Shift))
-	{
-		speed *= 5.f;
-	}
 
 	if (Input::GetKey(Key::A))
 	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		if (canJump.m_canJump == false)
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-200000.f * speed, -100000.f), true);
+		}
+		else
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		}
+
 	}
 	if (Input::GetKey(Key::D))
 	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		if (canJump.m_canJump == false)
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(200000.f * speed, -100000.f), true);
+		}
+		else
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}
 	}
 
-	//Change physics body size for circle
-	if (Input::GetKey(Key::O))
+	if (Input::GetKey(Key::W))
 	{
-		player.ScaleBody(1.3 * Timer::deltaTime, 0);
+
 	}
-	else if (Input::GetKey(Key::I))
+	if (Input::GetKey(Key::S))
 	{
-		player.ScaleBody(-1.3 * Timer::deltaTime, 0);
+
 	}
+
 }
 
 void PhysicsPlayground::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
+
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -643,9 +656,14 @@ void PhysicsPlayground::KeyboardDown()
 	{
 		if (Input::GetKeyDown(Key::Space))
 		{
-			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 160000.f), true);
+			player.GetBody()->ApplyLinearImpulseToCenter(b2Vec2(0.f, 350000.f), true);
 			canJump.m_canJump = false;
 		}
+	}
+
+	if (Input::GetKeyDown(Key::E))
+	{
+
 	}
 }
 
