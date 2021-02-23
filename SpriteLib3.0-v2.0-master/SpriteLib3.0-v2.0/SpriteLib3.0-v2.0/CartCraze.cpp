@@ -69,7 +69,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
 	}
 	
-	//Link entity
+	//Player entity
 	{
 		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
 
@@ -82,9 +82,10 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<CanJump>(entity);
 		ECS::AttachComponent<PlayerFacing>(entity);
+		ECS::AttachComponent<PlayerStats>(entity);
 
 		//Sets up the components
-		std::string fileName = "LinkStandby.png";
+		std::string fileName = "AppleTempSprite.jpg";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 35, 25);
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
@@ -389,8 +390,11 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 void CartCraze::Update()
 {
+
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
+
+
 }
 
 void CartCraze::GUI()
@@ -605,18 +609,18 @@ void CartCraze::KeyboardHold()
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 
 
-
+	float playerSpeed = ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed;
 	float speed = 2.f;
 	b2Vec2 vel = b2Vec2(0.f, 0.f);
 
 	if (Input::GetKey(Key::A))
 	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(-400000.f * speed, 0.f), true);
+		player.GetBody()->ApplyForceToCenter(b2Vec2(-playerSpeed * speed, 0.f), true);
 		ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight = false;
 	}
 	if (Input::GetKey(Key::D))
 	{
-		player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		player.GetBody()->ApplyForceToCenter(b2Vec2(playerSpeed * speed, 0.f), true);
 		ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight = true;
 	}
 
@@ -635,7 +639,7 @@ void CartCraze::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
-
+	std::string fileName = "LinkStandby.png";
 
 	if (Input::GetKeyDown(Key::T))
 	{
@@ -652,7 +656,50 @@ void CartCraze::KeyboardDown()
 
 	if (Input::GetKeyDown(Key::E))
 	{
-		seedEntity = Scene::CreateSeedProjectile(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
+		if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon == true)
+		{
+			seedEntity = Scene::CreateSeedProjectile(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
+		}
+		else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple == true)
+		{
+			juiceEntity = Scene::CreateJuiceProjectile(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
+		}
+		else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana == true)
+		{
+			peelEntity = Scene::CreatePeelProjectile(player.GetBody()->GetPosition().x, player.GetBody()->GetPosition().y);
+		}
+	}
+	if (Input::GetKeyDown(Key::G))
+	{
+		//Set up player stats and sprite and switches the character with a keypress; temp solution until a better character selection system can be made.
+		if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon == true)
+		{
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = false;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = true;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 3;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 350000;
+			fileName = "AppleTempSprite.jpg";
+			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+		}
+		else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple == true)
+		{
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = false;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = true;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 2;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 450000;
+			fileName = "BananaTempSprite.jpg";
+			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+		}
+		else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana == true)
+		{
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = false;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = true;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 5;
+			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 200000;
+			fileName = "WaterMelonTempSprite.jpg";
+			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+		}
+
 	}
 }
 

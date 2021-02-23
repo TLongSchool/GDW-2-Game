@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "CartCrazeListener.h"
 #include "PlayerFacing.h"
+#include "PlayerStats.h"
 #include <string>
 
 class CartCraze : public Scene

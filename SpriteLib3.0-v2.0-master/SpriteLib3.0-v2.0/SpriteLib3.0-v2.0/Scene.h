@@ -31,6 +31,8 @@ public:
 	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top,
 		float zNear, float zFar, float aspectRatio, bool vertScroll = false, bool horizScroll = false);
 	unsigned CreateSeedProjectile(float posX, float posY);
+	unsigned CreateJuiceProjectile(float posX, float posY);
+	unsigned CreatePeelProjectile(float posX, float posY);
 
 	//Gamepad Input
 	//Because these are virtual you can override them in your inherited classes.
