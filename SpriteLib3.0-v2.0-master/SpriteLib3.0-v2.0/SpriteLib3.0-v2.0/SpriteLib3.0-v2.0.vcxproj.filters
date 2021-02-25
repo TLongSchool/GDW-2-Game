@@ -147,16 +147,10 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsPlayground.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BackEnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Trigger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsPlaygroundListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DestroyTrigger.h">
@@ -191,6 +185,12 @@
     </ClInclude>
     <ClInclude Include="include\imgui\imstb_truetype.h">
       <Filter>Resource Files\ImGUi</Filter>
+    </ClInclude>
+    <ClInclude Include="CartCraze.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CartCrazeListener.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -326,13 +326,7 @@
     <ClCompile Include="AnimationSpritePlayground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsPlayground.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Trigger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsPlaygroundListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DestroyTrigger.cpp">
@@ -361,6 +355,12 @@
     </ClCompile>
     <ClCompile Include="include\imgui\imgui_widgets.cpp">
       <Filter>Resource Files\ImGUi</Filter>
+    </ClCompile>
+    <ClCompile Include="CartCraze.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CartCrazeListener.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
