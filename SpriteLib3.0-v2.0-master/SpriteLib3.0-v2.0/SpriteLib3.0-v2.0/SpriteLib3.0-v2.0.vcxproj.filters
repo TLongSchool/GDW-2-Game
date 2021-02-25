@@ -201,6 +201,9 @@
     <ClInclude Include="PlayerStats.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    </ClInclude>
+      <Filter>Header Files</Filter>
+    <ClInclude Include="EnemyTrigger.h">
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationController.cpp">
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="include\imgui\imgui_widgets.cpp">
       <Filter>Resource Files\ImGUi</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyTrigger.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CartCraze.cpp">
       <Filter>Source Files</Filter>
