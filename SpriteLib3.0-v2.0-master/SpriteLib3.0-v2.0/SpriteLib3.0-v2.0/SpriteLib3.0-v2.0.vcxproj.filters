@@ -329,9 +329,6 @@
     <ClCompile Include="AnimationSpritePlayground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsPlayground.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Trigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -366,6 +363,9 @@
       <Filter>Resource Files\ImGUi</Filter>
     </ClCompile>
     <ClCompile Include="EnemyTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CartCraze.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
