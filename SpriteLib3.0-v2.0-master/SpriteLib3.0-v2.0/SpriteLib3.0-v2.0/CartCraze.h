@@ -2,6 +2,8 @@
 
 #include "Scene.h"
 #include "CartCrazeListener.h"
+#include "PlayerFacing.h"
+#include "PlayerStats.h"
 #include <string>
 
 class CartCraze : public Scene
@@ -32,6 +34,11 @@ protected:
 	std::string m_fileInput;
 
 	CartCrazeListener listener;
+
+	int seedEntity = -1;
+	int peelEntity = -1;
+	int juiceEntity = -1;
+	int healthEntity = -1;
 
 	int puzzleWall1;
 	int puzzleWall2;

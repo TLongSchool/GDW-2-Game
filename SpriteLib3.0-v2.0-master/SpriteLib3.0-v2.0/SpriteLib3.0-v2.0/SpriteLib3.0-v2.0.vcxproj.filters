@@ -186,7 +186,7 @@
     <ClInclude Include="include\imgui\imstb_truetype.h">
       <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyTrigger.h">
+    <ClInclude Include="ProjectileCollision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CartCraze.h">
@@ -195,6 +195,15 @@
     <ClInclude Include="CartCrazeListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerFacing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStats.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    </ClInclude>
+      <Filter>Header Files</Filter>
+    <ClInclude Include="EnemyTrigger.h">
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AnimationController.cpp">

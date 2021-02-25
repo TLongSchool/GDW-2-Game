@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include "Utilities.h"
 
+
 Scene::Scene(std::string name)
 {
 	m_physicsWorld = new b2World(m_gravity);
@@ -129,6 +130,173 @@ void Scene::CreateCameraEntity(bool mainCamera, float windowWidth, float windowH
 			ECS::GetComponent<VerticalScroll>(entity).SetCam(&ECS::GetComponent<Camera>(entity));
 		}
 	}
+}
+
+//Projectile setup
+
+unsigned Scene::CreateSeedProjectile(float posX, float posY) //Setup for the watermelon's seed projectile
+{
+	auto entity = ECS::CreateEntity();
+	//auto player = ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer());
+
+	//Adding components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<ProjectileCollision>(entity);
+
+	//Setting up components
+	std::string fileName = "BeachBall.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 5);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 10.f));
+
+	auto& seedSpr = ECS::GetComponent<Sprite>(entity);
+	auto& seedPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	float shrinkX = 0.f;
+
+	b2Body* seedBody;
+	b2BodyDef seedDef;
+	seedDef.type = b2_dynamicBody;
+	float seedForce = 32000;
+
+	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
+	{
+		seedDef.position.Set(posX + 10, posY);
+	}
+	else
+	{
+		seedDef.position.Set(posX - 10, posY);
+	}
+
+	seedBody = m_physicsWorld->CreateBody(&seedDef);
+
+	seedPhsBody = PhysicsBody(entity, seedBody, float(seedSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //Makes a circle body
+
+	seedBody->SetFixedRotation(true);
+	seedPhsBody.SetRotationAngleDeg(0.f);
+	seedPhsBody.SetColor(vec4(0.f, 20.f, 10.f, 0.f));
+	seedPhsBody.SetGravityScale(0.2f);
+	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
+	{
+		seedBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 0.f), true);
+	}
+	else
+	{
+		seedBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 0.f), true);
+	}
+	return entity;
+}
+
+unsigned Scene::CreateJuiceProjectile(float posX, float posY) //Setup for the apple's juice projectile
+{
+	auto entity = ECS::CreateEntity();
+	//auto player = ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer());
+
+	//Adding components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<ProjectileCollision>(entity);
+
+	//Setting up components
+	std::string fileName = "BeachBall.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 5);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 10.f));
+
+	auto& juiceSpr = ECS::GetComponent<Sprite>(entity);
+	auto& juicePhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	float shrinkX = 0.f;
+
+	b2Body* juiceBody;
+	b2BodyDef juiceDef;
+	juiceDef.type = b2_dynamicBody;
+	float juiceForce = 32000;
+
+	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
+	{
+		juiceDef.position.Set(posX + 10, posY);
+	}
+	else
+	{
+		juiceDef.position.Set(posX - 10, posY);
+	}
+
+	juiceBody = m_physicsWorld->CreateBody(&juiceDef);
+
+	juicePhsBody = PhysicsBody(entity, juiceBody, float(juiceSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //Makes a circle body
+
+	juiceBody->SetFixedRotation(true);
+	juicePhsBody.SetRotationAngleDeg(0.f);
+	juicePhsBody.SetColor(vec4(0.f, 20.f, 10.f, 0.f));
+	juicePhsBody.SetGravityScale(0.2f);
+	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
+	{
+		juiceBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 0.f), true);
+	}
+	else
+	{
+		juiceBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 0.f), true);
+	}
+	return entity;
+}
+
+unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the banana's peel projectile
+{
+	auto entity = ECS::CreateEntity();
+	//auto player = ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer());
+
+	//Adding components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<ProjectileCollision>(entity);
+
+	//Setting up components
+	std::string fileName = "hexagon.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 5);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 10.f));
+
+	auto& peelSpr = ECS::GetComponent<Sprite>(entity);
+	auto& peelPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	float shrinkX = 0.f;
+
+	b2Body* peelBody;
+	b2BodyDef peelDef;
+	peelDef.type = b2_dynamicBody;
+	float peelForce = 32000;
+
+	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
+	{
+		peelDef.position.Set(posX + 10, posY);
+	}
+	else
+	{
+		peelDef.position.Set(posX - 10, posY);
+	}
+
+	peelBody = m_physicsWorld->CreateBody(&peelDef);
+
+	peelPhsBody = PhysicsBody(entity, peelBody, float(peelSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //Makes a circle body
+
+	peelBody->SetFixedRotation(true);
+	peelPhsBody.SetRotationAngleDeg(0.f);
+	peelPhsBody.SetColor(vec4(0.f, 20.f, 10.f, 0.f));
+	peelPhsBody.SetGravityScale(0.2f);
+	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
+	{
+		peelBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 0.f), true);
+	}
+	else
+	{
+		peelBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 0.f), true);
+	}
+	return entity;
 }
 
 entt::registry* Scene::GetScene() const
