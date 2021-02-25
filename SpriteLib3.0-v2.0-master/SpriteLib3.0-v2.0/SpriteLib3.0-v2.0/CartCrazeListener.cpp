@@ -1,14 +1,14 @@
-#include "PhysicsPlaygroundListener.h"
+#include "CartCrazeListener.h"
 
 #include "ECS.h"
 
-PhysicsPlaygroundListener::PhysicsPlaygroundListener()
+CartCrazeListener::CartCrazeListener()
 	: b2ContactListener()
 {
 
 }
 
-void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
+void CartCrazeListener::BeginContact(b2Contact* contact)
 {
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
@@ -46,7 +46,7 @@ void PhysicsPlaygroundListener::BeginContact(b2Contact* contact)
 
 }
 
-void PhysicsPlaygroundListener::EndContact(b2Contact* contact)
+void CartCrazeListener::EndContact(b2Contact* contact)
 {
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
@@ -68,14 +68,14 @@ void PhysicsPlaygroundListener::EndContact(b2Contact* contact)
 	}
 }
 
-void PhysicsPlaygroundListener::TriggerEnter(b2Fixture* sensor)
+void CartCrazeListener::TriggerEnter(b2Fixture* sensor)
 {
 	int entity = (int)sensor->GetBody()->GetUserData();
 
 	ECS::GetComponent<Trigger*>(entity)->OnEnter();
 }
 
-void PhysicsPlaygroundListener::TriggerExit(b2Fixture* sensor)
+void CartCrazeListener::TriggerExit(b2Fixture* sensor)
 {
 	int entity = (int)sensor->GetBody()->GetUserData();
 

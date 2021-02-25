@@ -147,16 +147,10 @@
     <ClInclude Include="Player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PhysicsPlayground.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BackEnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Trigger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsPlaygroundListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DestroyTrigger.h">
@@ -193,6 +187,12 @@
       <Filter>Resource Files\ImGUi</Filter>
     </ClInclude>
     <ClInclude Include="EnemyTrigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CartCraze.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CartCrazeListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -332,9 +332,6 @@
     <ClCompile Include="Trigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PhysicsPlaygroundListener.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DestroyTrigger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -366,6 +363,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CartCraze.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CartCrazeListener.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

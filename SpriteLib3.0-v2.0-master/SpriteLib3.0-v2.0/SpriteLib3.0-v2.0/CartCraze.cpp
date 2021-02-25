@@ -1,9 +1,9 @@
-#include "PhysicsPlayground.h"
+#include "CartCraze.h"
 #include "Utilities.h"
 
 #include <random>
 
-PhysicsPlayground::PhysicsPlayground(std::string name)
+CartCraze::CartCraze(std::string name)
 	: Scene(name)
 {
 	//No gravity this is a top down scene
@@ -13,7 +13,7 @@ PhysicsPlayground::PhysicsPlayground(std::string name)
 	m_physicsWorld->SetContactListener(&listener);
 }
 
-void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
+void CartCraze::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
 	m_sceneReg = new entt::registry;
@@ -388,12 +388,12 @@ void PhysicsPlayground::InitScene(float windowWidth, float windowHeight)
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 }
 
-void PhysicsPlayground::Update()
+void CartCraze::Update()
 {
 	
 }
 
-void PhysicsPlayground::GUI()
+void CartCraze::GUI()
 {
 	GUIWindowUI();
 
@@ -408,7 +408,7 @@ void PhysicsPlayground::GUI()
 	}
 }
 
-void PhysicsPlayground::GUIWindowUI()
+void CartCraze::GUIWindowUI()
 {
 	ImGui::Begin("Test");
 
@@ -422,7 +422,7 @@ void PhysicsPlayground::GUIWindowUI()
 	ImGui::End();
 }
 
-void PhysicsPlayground::GUIWindowOne()
+void CartCraze::GUIWindowOne()
 {
 	//Window begin
 	ImGui::Begin("Side Docked Window");
@@ -552,7 +552,7 @@ void PhysicsPlayground::GUIWindowOne()
 	ImGui::End();
 }
 
-void PhysicsPlayground::GUIWindowTwo()
+void CartCraze::GUIWindowTwo()
 {
 	//Second docked window
 	ImGui::Begin("Second Window");
@@ -600,7 +600,7 @@ void PhysicsPlayground::GUIWindowTwo()
 
 
 
-void PhysicsPlayground::KeyboardHold()
+void CartCraze::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
@@ -644,7 +644,7 @@ void PhysicsPlayground::KeyboardHold()
 
 }
 
-void PhysicsPlayground::KeyboardDown()
+void CartCraze::KeyboardDown()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
@@ -669,7 +669,7 @@ void PhysicsPlayground::KeyboardDown()
 	}
 }
 
-void PhysicsPlayground::KeyboardUp()
+void CartCraze::KeyboardUp()
 {
 	
 
