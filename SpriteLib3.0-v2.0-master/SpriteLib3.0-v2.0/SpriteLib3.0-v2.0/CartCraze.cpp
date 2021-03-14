@@ -1016,6 +1016,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		//Sets up components
 		std::string fileName = "greybox.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 30);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(35.f, -8.f, 3.f));
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
@@ -1037,7 +1038,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(20.f - shrinkX), float(20.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(30.f - shrinkX), float(30.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 	
