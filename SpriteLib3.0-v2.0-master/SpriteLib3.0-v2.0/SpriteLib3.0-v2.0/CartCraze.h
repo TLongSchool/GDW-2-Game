@@ -35,4 +35,5 @@ protected:
 
 	int puzzleWall1;
 	int puzzleWall2;
+	int climb;
 };

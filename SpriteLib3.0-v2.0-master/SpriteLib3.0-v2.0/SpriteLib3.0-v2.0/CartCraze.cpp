@@ -2,6 +2,7 @@
 #include "Utilities.h"
 
 #include <random>
+#include "LadderTrigger.h"
 
 CartCraze::CartCraze(std::string name)
 	: Scene(name)
@@ -57,6 +58,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		auto entity = ECS::CreateEntity();
 		ECS::SetIsMainPlayer(entity, true);
+		climb = entity;
 
 		//Add components
 		ECS::AttachComponent<Sprite>(entity);
@@ -984,38 +986,38 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 	}
 
 	//Setup static Wall
-	//{
-	//	//Creates entity
-	//	auto entity = ECS::CreateEntity();
-	//	puzzleWall1 = entity;
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+		puzzleWall1 = entity;
 
-	//	//Add components
-	//	ECS::AttachComponent<Sprite>(entity);
-	//	ECS::AttachComponent<Transform>(entity);
-	//	ECS::AttachComponent<PhysicsBody>(entity);
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
 
-	//	//Sets up components
-	//	std::string fileName = "boxSprite.jpg";
-	//	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 15);
-	//	ECS::GetComponent<Transform>(entity).SetPosition(vec3(45.f, -20.f, 2.f));
+		//Sets up components
+		std::string fileName = "boxSprite.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 15);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(45.f, -20.f, 2.f));
 
-	//	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-	//	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-	//	float shrinkX = 0.f;
-	//	float shrinkY = 0.f;
-	//	b2Body* tempBody;
-	//	b2BodyDef tempDef;
-	//	tempDef.type = b2_kinematicBody;
-	//	tempDef.position.Set(float32(267.f), float32(5.f));
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_kinematicBody;
+		tempDef.position.Set(float32(267.f), float32(5.f));
 
-	//	tempBody = m_physicsWorld->CreateBody(&tempDef);
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-	//	tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | OBJECTS | ENEMY | HEXAGON);
-	//	tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
-	//	tempPhsBody.SetRotationAngleDeg(90.f);
-	//	tempPhsBody.SetPosition(b2Vec2(267.f, 5.f));
-	//}
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | OBJECTS | ENEMY | HEXAGON);
+		tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
+		tempPhsBody.SetRotationAngleDeg(90.f);
+		tempPhsBody.SetPosition(b2Vec2(267.f, 5.f));
+	}
 
 	//Ball
 	//{
@@ -1051,40 +1053,39 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 	//}
 
 	//Setup trigger
-	//{
-	//	//Creates entity
-	//	auto entity = ECS::CreateEntity();
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
 
-	//	//Add components
-	//	ECS::AttachComponent<Transform>(entity);
-	//	ECS::AttachComponent<PhysicsBody>(entity);
-	//	ECS::AttachComponent<Trigger*>(entity);
-	//	
-	//	//Sets up components
-	//	std::string fileName = "boxSprite.jpg";
-	//	ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-	//	ECS::GetComponent<Trigger*>(entity) = new TranslateTrigger();
-	//	ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-	//	ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(puzzleWall1);
-	//	TranslateTrigger* temp = (TranslateTrigger*)ECS::GetComponent<Trigger*>(entity);
-	//	temp->movement = b2Vec2(0.f, 15.f);
-	//	
-	//	//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(puzzleWall2);
+		//Add components
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+		
+		//Sets up components
+		std::string fileName = "boxSprite.jpg";
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+		ECS::GetComponent<Trigger*>(entity) = new TranslateTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(climb);
+		LadderTrigger* temp = (LadderTrigger*)ECS::GetComponent<Trigger*>(entity);
+		
+		//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(puzzleWall2);
 
-	//	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
-	//	float shrinkX = 0.f;
-	//	float shrinkY = 0.f;
-	//	b2Body* tempBody;
-	//	b2BodyDef tempDef;
-	//	tempDef.type = b2_staticBody;
-	//	tempDef.position.Set(float32(295.f), float32(-30.f));
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(295.f), float32(0.f));
 
-	//	tempBody = m_physicsWorld->CreateBody(&tempDef);
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-	//	tempPhsBody = PhysicsBody(entity, tempBody, float(40.f - shrinkX), float(40.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
-	//	tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-	//}
+		tempPhsBody = PhysicsBody(entity, tempBody, float(40.f - shrinkX), float(40.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	}
 
 	// Hexagon Object
 	//{
@@ -1343,6 +1344,7 @@ void CartCraze::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
+//	auto& canClimb = ECS::GetComponent<CanClimb>(MainEntities::MainPlayer());
 
 
 	float speed = 2.f;
@@ -1374,7 +1376,10 @@ void CartCraze::KeyboardHold()
 
 	if (Input::GetKey(Key::W))
 	{
-
+		/*if (canClimb.m_canClimb == true)
+		{
+			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
+		}*/
 	}
 	if (Input::GetKey(Key::S))
 	{
