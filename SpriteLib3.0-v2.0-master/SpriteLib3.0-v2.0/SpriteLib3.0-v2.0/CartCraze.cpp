@@ -24,10 +24,6 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
 
-	EffectManager::CreateEffect(EffectType::Vignette, windowWidth, windowHeight);
-	EffectManager::CreateEffect(EffectType::Sepia, windowWidth, windowHeight);
-	
-
 	//Setup MainCamera Entity
 	{
 		/*Scene::CreateCamera(m_sceneReg, vec4(-75.f, 75.f, -75.f, 75.f), -100.f, 100.f, windowWidth, windowHeight, true, true);*/
@@ -63,10 +59,10 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(entity);
 
 		//Set up the components
-		std::string fileName = "HelloWorld.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 60);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(0.5f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
+		std::string fileName = "CartCrazeBackground.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 820, 600);
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(300.f, 0.f, 0.f));
 	}
 	
 	//Player entity
@@ -1015,7 +1011,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Trigger*>(entity);
 
 		//Sets up components
-		std::string fileName = "greybox.jpg";
+		std::string fileName = "evil_cookie_static.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 30);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(35.f, -8.f, 3.f));
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
@@ -1034,7 +1030,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(40.f), float32(4.f));
+		tempDef.position.Set(float32(500.f), float32(79.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -1355,7 +1351,7 @@ void CartCraze::KeyboardDown()
 			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = true;
 			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 5;
 			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 200000;
-			fileName = "WaterMelonTempSprite.jpg";
+			fileName = "watermelon.png";
 			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
 		}
 
