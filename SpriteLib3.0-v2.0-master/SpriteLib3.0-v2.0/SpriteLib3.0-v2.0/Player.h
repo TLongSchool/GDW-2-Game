@@ -98,7 +98,7 @@ private:
 	bool m_hasPhysics = false;
 
 	//Default animation direction (feel free to change this to suit your game. If you're making a side-scroller, left or right would be better
-	AnimDir m_facing = LEFT;
+	AnimDir m_facing = RIGHT;
 };
 
 #endif // !__PLAYER_H__
