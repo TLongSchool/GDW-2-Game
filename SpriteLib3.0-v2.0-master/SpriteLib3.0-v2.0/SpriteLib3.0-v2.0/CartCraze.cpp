@@ -29,7 +29,7 @@ void backgroundPic(int x)
 	std::string fileName = "CartCrazeBackground.png";
 	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 820, 600);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-	ECS::GetComponent<Transform>(entity).SetPosition(vec3(x, 0.f, 0.f));
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(x, 20.f, 0.f));
 }
 
 void CartCraze::InitScene(float windowWidth, float windowHeight)
