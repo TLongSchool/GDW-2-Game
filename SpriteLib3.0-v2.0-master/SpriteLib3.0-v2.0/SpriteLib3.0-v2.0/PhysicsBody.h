@@ -25,6 +25,8 @@ enum EntityCategories
 	OBJECTS		= 0x0004,
 	PLAYER		= 0x0008,
 	FRIENDLY	= 0x0016,
+	PROJECTILE  = 0x0017,
+	MINE		= 0x0018,
 	ENEMY		= 0x0032,
 	PICKUP		= 0x0064,
 	TRIGGER		= 0x0128,

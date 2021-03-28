@@ -15,6 +15,7 @@
 #include "EnemyTrigger.h"
 #include "HorizontalScroll.h"
 #include "CanJump.h"
+#include "PlayerStats.h"
 
 
 class ECS abstract

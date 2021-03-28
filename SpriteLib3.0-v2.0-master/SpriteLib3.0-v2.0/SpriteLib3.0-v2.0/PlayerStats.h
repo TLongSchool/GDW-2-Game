@@ -12,6 +12,4 @@ public:
 	bool isApple = true;
 	bool isBanana = false;
 	bool isWaterMelon = false;
-
-	//Final stats of the different characters
 };

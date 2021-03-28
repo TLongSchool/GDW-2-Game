@@ -27,6 +27,8 @@ public:
 	void KeyboardDown() override;
 	void KeyboardUp() override;
 
+	std::vector<int> projectileStorage;
+
 protected:
 	bool m_firstWindow = false;
 	bool m_secondWindow = false;
@@ -40,6 +42,6 @@ protected:
 	int juiceEntity = -1;
 	int healthEntity = -1;
 
-	int puzzleWall1;
-	int puzzleWall2;
+	//int puzzleWall1;
+	//int puzzleWall2;
 };

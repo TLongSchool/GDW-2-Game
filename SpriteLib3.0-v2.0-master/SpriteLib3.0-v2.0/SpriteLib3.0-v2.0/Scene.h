@@ -8,6 +8,7 @@
 #include "MainEntities.h"
 #include <SDL2/SDL.h>
 #include "ProjectileCollision.h"
+#include "EnemyStats.h"
 
 
 class Scene
@@ -33,6 +34,8 @@ public:
 	unsigned CreateSeedProjectile(float posX, float posY);
 	unsigned CreateJuiceProjectile(float posX, float posY);
 	unsigned CreatePeelProjectile(float posX, float posY);
+	unsigned CreateCookieEnemy(float posX, float posY);
+	unsigned CreateIcecreamEnemy(float posX, float posY);
 
 	//Gamepad Input
 	//Because these are virtual you can override them in your inherited classes.

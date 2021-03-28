@@ -172,7 +172,7 @@ unsigned Scene::CreateSeedProjectile(float posX, float posY) //Setup for the wat
 
 	seedBody = m_physicsWorld->CreateBody(&seedDef);
 
-	seedPhsBody = PhysicsBody(entity, seedBody, float(seedSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //Makes a circle body
+	seedPhsBody = PhysicsBody(entity, seedBody, float(seedSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, PROJECTILE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
 
 	seedBody->SetFixedRotation(true);
 	seedPhsBody.SetRotationAngleDeg(0.f);
@@ -227,7 +227,7 @@ unsigned Scene::CreateJuiceProjectile(float posX, float posY) //Setup for the ap
 
 	juiceBody = m_physicsWorld->CreateBody(&juiceDef);
 
-	juicePhsBody = PhysicsBody(entity, juiceBody, float(juiceSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //Makes a circle body
+	juicePhsBody = PhysicsBody(entity, juiceBody, float(juiceSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
 
 	juiceBody->SetFixedRotation(true);
 	juicePhsBody.SetRotationAngleDeg(0.f);
@@ -282,7 +282,7 @@ unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the ban
 
 	peelBody = m_physicsWorld->CreateBody(&peelDef);
 
-	peelPhsBody = PhysicsBody(entity, peelBody, float(peelSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT, 0.f, 0.f); //Makes a circle body
+	peelPhsBody = PhysicsBody(entity, peelBody, float(peelSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, MINE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
 
 	peelBody->SetFixedRotation(true);
 	peelPhsBody.SetRotationAngleDeg(0.f);
@@ -290,12 +290,88 @@ unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the ban
 	peelPhsBody.SetGravityScale(0.2f);
 	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
 	{
-		peelBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 0.f), true);
+		peelBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 50000.f), true);
 	}
 	else
 	{
-		peelBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 0.f), true);
+		peelBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 50000.f), true);
 	}
+	return entity;
+}
+
+unsigned Scene::CreateCookieEnemy(float posX, float posY)
+{
+	//Creates entity
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	ECS::AttachComponent<EnemyStats>(entity);
+	//ECS::AttachComponent<Trigger*>(entity);
+
+	//Sets up components
+	std::string fileName = "evil_cookie_static.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 25, 25);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 3.f));
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<EnemyStats>(entity).health = 3;
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	float shrinkX = 0.f;
+	float shrinkY = 0.f;
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_dynamicBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), false, ENEMY, PLAYER | GROUND | PROJECTILE | FRIENDLY);
+	tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+
+	return entity;
+}
+
+unsigned Scene::CreateIcecreamEnemy(float posX, float posY)
+{
+	//Creates entity
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+	ECS::AttachComponent<PhysicsBody>(entity);
+	//ECS::AttachComponent<Trigger*>(entity);
+
+	//Sets up components
+	std::string fileName = "evil_cookie_static.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 25, 25);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 3.f));
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	//ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+	//ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+	//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(entity);
+	//EnemyTrigger* temp = (EnemyTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+	float shrinkX = 0.f;
+	float shrinkY = 0.f;
+	b2Body* tempBody;
+	b2BodyDef tempDef;
+	tempDef.type = b2_dynamicBody;
+	tempDef.position.Set(float32(posX), float32(posY));
+
+	tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+	tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), false, ENEMY, PLAYER | GROUND | PROJECTILE | FRIENDLY);
+	tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+
 	return entity;
 }
 
