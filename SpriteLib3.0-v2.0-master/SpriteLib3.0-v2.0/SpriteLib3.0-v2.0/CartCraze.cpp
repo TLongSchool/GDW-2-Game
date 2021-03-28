@@ -13,6 +13,25 @@ CartCraze::CartCraze(std::string name)
 	m_physicsWorld->SetContactListener(&listener);
 }
 
+//Background
+void backgroundPic(int x)
+{
+	/*Scene::CreateSprite(m_sceneReg, "HelloWorld.png", 100, 60, 0.5f, vec3(0.f, 0.f, 0.f));*/
+
+	//Creates entity
+	auto entity = ECS::CreateEntity();
+
+	//Add components
+	ECS::AttachComponent<Sprite>(entity);
+	ECS::AttachComponent<Transform>(entity);
+
+	//Set up the components
+	std::string fileName = "CartCrazeBackground.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 820, 600);
+	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+	ECS::GetComponent<Transform>(entity).SetPosition(vec3(x, 20.f, 0.f));
+}
+
 void CartCraze::InitScene(float windowWidth, float windowHeight)
 {
 	//Dynamically allocates the register
@@ -23,10 +42,6 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 	//Sets up aspect ratio for the camera
 	float aspectRatio = windowWidth / windowHeight;
-
-	EffectManager::CreateEffect(EffectType::Vignette, windowWidth, windowHeight);
-	EffectManager::CreateEffect(EffectType::Sepia, windowWidth, windowHeight);
-	
 
 	//Setup MainCamera Entity
 	{
@@ -51,24 +66,25 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		ECS::GetComponent<VerticalScroll>(entity).SetCam(&ECS::GetComponent<Camera>(entity));
 	}
 
-	//Setup new Entity
+	//Generate the background
 	{
-		/*Scene::CreateSprite(m_sceneReg, "HelloWorld.png", 100, 60, 0.5f, vec3(0.f, 0.f, 0.f));*/
+		int xBackDistRight = 400;
+		int xBackDistLeft = -400;
 
-		//Creates entity
-		auto entity = ECS::CreateEntity();
+		for (int i = 0; i < 25; i++) {
 
-		//Add components
-		ECS::AttachComponent<Sprite>(entity);
-		ECS::AttachComponent<Transform>(entity);
+			backgroundPic(xBackDistRight);
+			xBackDistRight += 820;
 
-		//Set up the components
-		std::string fileName = "HelloWorld.png";
-		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 100, 60);
-		ECS::GetComponent<Sprite>(entity).SetTransparency(0.5f);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 0.f, 0.f));
+		}
+
+		for (int i = 0; i < 25; i++) {
+
+			backgroundPic(xBackDistLeft);
+			xBackDistLeft -= 820;
+
+		}
 	}
-	
 	//Player entity
 	{
 		/*Scene::CreatePhysicsSprite(m_sceneReg, "LinkStandby", 80, 60, 1.f, vec3(0.f, 30.f, 2.f), b2_dynamicBody, 0.f, 0.f, true, true)*/
@@ -1003,7 +1019,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 	}
 
-	//Enemy
+	//Enemy 1
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
@@ -1015,15 +1031,14 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Trigger*>(entity);
 
 		//Sets up components
-		std::string fileName = "greybox.jpg";
+		std::string fileName = "evil_cookie_static.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 25, 25);
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(35.f, -8.f, 3.f));
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(entity);
 		EnemyTrigger* temp = (EnemyTrigger*)ECS::GetComponent<Trigger*>(entity);
-
-		//ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(puzzleWall2);
 
 		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1033,11 +1048,85 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		b2Body* tempBody;
 		b2BodyDef tempDef;
 		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(40.f), float32(4.f));
+		tempDef.position.Set(float32(500.f), float32(76.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(20.f - shrinkX), float(20.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	}
+
+	//Enemy 2
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+		//Sets up components
+		std::string fileName = "evil_cookie_static.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 25, 25);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(35.f, -8.f, 3.f));
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(entity);
+		EnemyTrigger* temp = (EnemyTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(500.f), float32(6.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	}
+
+	//Enemy 2
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+		//Sets up components
+		std::string fileName = "evil_cookie_static.png";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 25, 25);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(35.f, -8.f, 3.f));
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(entity);
+		EnemyTrigger* temp = (EnemyTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(420.f), float32(6.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 	
@@ -1275,6 +1364,7 @@ void CartCraze::KeyboardHold()
 	{
 		player.GetBody()->ApplyForceToCenter(b2Vec2(-playerSpeed * speed, 0.f), true);
 		ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight = false;
+
 	}
 	if (Input::GetKey(Key::D))
 	{
@@ -1354,7 +1444,7 @@ void CartCraze::KeyboardDown()
 			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = true;
 			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 5;
 			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 200000;
-			fileName = "WaterMelonTempSprite.jpg";
+			fileName = "watermelon.png";
 			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
 		}
 
