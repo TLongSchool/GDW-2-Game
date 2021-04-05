@@ -65,6 +65,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		ECS::AttachComponent<Transform>(entity);
 		ECS::AttachComponent<PhysicsBody>(entity);
 		ECS::AttachComponent<CanJump>(entity);
+		ECS::AttachComponent<CanClimb>(entity);
 
 		//Sets up the components
 		std::string fileName = "LinkStandby.png";
@@ -1013,7 +1014,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | OBJECTS | ENEMY | HEXAGON);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, LADDER, PLAYER | OBJECTS | ENEMY | HEXAGON);
 		tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 		tempPhsBody.SetRotationAngleDeg(90.f);
 		tempPhsBody.SetPosition(b2Vec2(267.f, 5.f));
@@ -1052,7 +1053,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 	//	tempPhsBody.SetColor(vec4(1.f, 0.f, 1.f, 0.3f));
 	//}
 
-	//Setup trigger
+	//Setup ladder trigger
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
@@ -1344,7 +1345,7 @@ void CartCraze::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
-//	auto& canClimb = ECS::GetComponent<CanClimb>(MainEntities::MainPlayer());
+	auto& canClimb = ECS::GetComponent<CanClimb>(MainEntities::MainPlayer());
 
 
 	float speed = 2.f;
@@ -1376,10 +1377,10 @@ void CartCraze::KeyboardHold()
 
 	if (Input::GetKey(Key::W))
 	{
-		/*if (canClimb.m_canClimb == true)
+		if (canClimb.m_canClimb == true)
 		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(400000.f * speed, 0.f), true);
-		}*/
+			player.GetBody()->ApplyForceToCenter(b2Vec2(0.f * speed, 400000.f), true);
+		}
 	}
 	if (Input::GetKey(Key::S))
 	{

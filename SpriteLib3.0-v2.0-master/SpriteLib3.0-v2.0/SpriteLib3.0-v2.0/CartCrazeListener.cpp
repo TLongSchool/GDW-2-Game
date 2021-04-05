@@ -32,6 +32,7 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 	b2Filter filterA = fixtureA->GetFilterData();
 	b2Filter filterB = fixtureB->GetFilterData();
 
+	// For player jumping
 	if ((filterA.categoryBits == PLAYER && filterB.categoryBits == GROUND) || (filterB.categoryBits == PLAYER && filterA.categoryBits == GROUND))
 	{
 		if (filterA.categoryBits == PLAYER)
@@ -41,6 +42,31 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 		else if (filterB.categoryBits == PLAYER)
 		{
 			ECS::GetComponent<CanJump>((int)fixtureB->GetBody()->GetUserData()).m_canJump = true;
+		}
+	}
+
+	// For player ladder climbing
+	if ((filterA.categoryBits == PLAYER && filterB.categoryBits == LADDER) || (filterB.categoryBits == PLAYER && filterA.categoryBits == LADDER))
+	{
+		if (filterA.categoryBits == PLAYER)
+		{
+			ECS::GetComponent<CanClimb>((int)fixtureA->GetBody()->GetUserData()).m_canClimb = true;
+		}
+		else if (filterB.categoryBits == PLAYER)
+		{
+			ECS::GetComponent<CanClimb>((int)fixtureB->GetBody()->GetUserData()).m_canClimb = true;
+		}
+	}
+
+	if ((filterA.categoryBits == PLAYER && filterB.categoryBits == GROUND) || (filterB.categoryBits == PLAYER && filterA.categoryBits == GROUND))
+	{
+		if (filterA.categoryBits == PLAYER)
+		{
+			ECS::GetComponent<CanClimb>((int)fixtureA->GetBody()->GetUserData()).m_canClimb = false;
+		}
+		else if (filterB.categoryBits == PLAYER)
+		{
+			ECS::GetComponent<CanClimb>((int)fixtureB->GetBody()->GetUserData()).m_canClimb = false;
 		}
 	}
 
