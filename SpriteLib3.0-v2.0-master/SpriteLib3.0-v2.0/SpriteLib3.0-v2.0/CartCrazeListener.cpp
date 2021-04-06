@@ -11,6 +11,7 @@ CartCrazeListener::CartCrazeListener()
 
 void CartCrazeListener::BeginContact(b2Contact* contact)
 {
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
 
@@ -45,6 +46,7 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 			ECS::GetComponent<CanJump>((int)fixtureB->GetBody()->GetUserData()).m_canJump = true;
 		}
 	}
+
 
 	//Player and enemy contact check, for determining if player has taken damage.
 	if ((filterA.categoryBits == ENEMY && filterB.categoryBits == PLAYER) || (filterB.categoryBits == ENEMY && filterA.categoryBits == PLAYER))
@@ -125,6 +127,15 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 		{
 			ECS::GetComponent<ProjectileCollision>((int)fixtureA->GetBody()->GetUserData()).hasCollided = true;
 			ECS::GetComponent<EnemyStats>((int)fixtureB->GetBody()->GetUserData()).isStunned = true;
+		}
+	}
+
+	//Finish line check
+	if ((filterA.categoryBits == FINISH) || (filterB.categoryBits == FINISH))
+	{
+		if (filterA.categoryBits == PLAYER)
+		{
+
 		}
 	}
 }

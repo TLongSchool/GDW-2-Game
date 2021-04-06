@@ -12,4 +12,7 @@ public:
 	bool isApple = true;
 	bool isBanana = false;
 	bool isWaterMelon = false;
+
+	//Checkpoint position data
+	b2Vec2 checkPointPos;
 };

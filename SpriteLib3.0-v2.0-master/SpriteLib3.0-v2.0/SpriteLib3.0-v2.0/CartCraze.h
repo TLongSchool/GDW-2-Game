@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Scene.h"
+#include "Game.h"
 #include "CartCrazeListener.h"
 #include "PlayerFacing.h"
 #include "PlayerStats.h"
@@ -28,6 +29,12 @@ public:
 	void KeyboardUp() override;
 
 	std::vector<int> projectileStorage;
+
+	bool gameRun = true;
+	bool controlsMenu = false;
+	bool gameOver = false;
+	bool gameWin = false;
+	bool mainMenu = false;
 
 protected:
 	bool m_firstWindow = false;
