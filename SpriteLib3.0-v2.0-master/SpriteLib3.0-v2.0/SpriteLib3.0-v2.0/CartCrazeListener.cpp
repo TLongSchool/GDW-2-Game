@@ -58,18 +58,6 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 		}
 	}
 
-	if ((filterA.categoryBits == PLAYER && filterB.categoryBits == GROUND) || (filterB.categoryBits == PLAYER && filterA.categoryBits == GROUND))
-	{
-		if (filterA.categoryBits == PLAYER)
-		{
-			ECS::GetComponent<CanClimb>((int)fixtureA->GetBody()->GetUserData()).m_canClimb = false;
-		}
-		else if (filterB.categoryBits == PLAYER)
-		{
-			ECS::GetComponent<CanClimb>((int)fixtureB->GetBody()->GetUserData()).m_canClimb = false;
-		}
-	}
-
 }
 
 void CartCrazeListener::EndContact(b2Contact* contact)
@@ -86,10 +74,12 @@ void CartCrazeListener::EndContact(b2Contact* contact)
 		if (sensorA)
 		{
 			TriggerExit(fixtureA);
+			ECS::GetComponent<CanClimb>((int)fixtureB->GetBody()->GetUserData()).m_canClimb = false;
 		}
 		else if (sensorB)
 		{
 			TriggerExit(fixtureB);
+			ECS::GetComponent<CanClimb>((int)fixtureB->GetBody()->GetUserData()).m_canClimb = false;
 		}
 	}
 }
