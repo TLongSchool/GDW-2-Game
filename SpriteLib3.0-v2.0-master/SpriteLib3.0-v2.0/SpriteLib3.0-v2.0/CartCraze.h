@@ -42,4 +42,6 @@ protected:
 
 	int puzzleWall1;
 	int puzzleWall2;
+
+
 };
