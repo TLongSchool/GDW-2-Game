@@ -1,5 +1,6 @@
 #include "CartCraze.h"
 #include "Utilities.h"
+#include "Trigger.h"
 
 #include <random>
 
@@ -1461,7 +1462,6 @@ void CartCraze::GUIWindowTwo()
 
 	ImGui::End();
 }
-
 
 
 

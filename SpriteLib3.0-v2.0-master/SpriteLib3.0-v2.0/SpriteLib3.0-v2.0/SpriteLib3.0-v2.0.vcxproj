@@ -178,6 +178,7 @@
     <ClInclude Include="PostEffect.h" />
     <ClInclude Include="ProjectileCollision.h" />
     <ClInclude Include="RenderingSystem.h" />
+    <ClInclude Include="ReverseTrigger.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="Selectable.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
+    <ClCompile Include="ReverseTrigger.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Selectable.cpp" />
     <ClCompile Include="SelectiveColorEffect.cpp" />
