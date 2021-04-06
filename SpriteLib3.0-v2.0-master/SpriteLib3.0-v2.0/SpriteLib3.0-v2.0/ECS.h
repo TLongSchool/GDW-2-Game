@@ -13,6 +13,7 @@
 #include "DestroyTrigger.h"
 #include "TranslateTrigger.h"
 #include "EnemyTrigger.h"
+#include "ReverseTrigger.h"
 #include "HorizontalScroll.h"
 #include "CanJump.h"
 
@@ -53,6 +54,7 @@ public:
 	//Side stuff for entity identifier
 	static void SetIsMainCamera(unsigned entity, bool mainCamera);
 	static void SetIsMainPlayer(unsigned entity, bool mainPlayer);
+	static void SetIsMainEnemy(unsigned entity, bool mainEnemy);
 
 	static entt::registry* m_reg;
 };

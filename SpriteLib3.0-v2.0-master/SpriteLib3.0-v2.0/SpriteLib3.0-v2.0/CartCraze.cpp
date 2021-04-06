@@ -1,5 +1,6 @@
 #include "CartCraze.h"
 #include "Utilities.h"
+#include "Trigger.h"
 
 #include <random>
 
@@ -1019,6 +1020,44 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 	}
 
+	//Turn trigger 1
+	/*{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+
+		//Sets up components
+		std::string fileName = "greybox.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 30);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+		ECS::GetComponent<Trigger*>(entity) = new ReverseTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(entity);
+		ReverseTrigger* temp = (ReverseTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(100.f), float32(6.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
+			float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, TRIGGER, ENEMY | OBJECTS);
+		tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
+
+	}*/
+
 	//Enemy 1
 	{
 		//Creates entity
@@ -1033,7 +1072,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		//Sets up components
 		std::string fileName = "evil_cookie_static.png";
 		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 25, 25);
-		ECS::GetComponent<Transform>(entity).SetPosition(vec3(35.f, -8.f, 3.f));
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(35.f, -8.f, 2.f));
 		ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 		ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
@@ -1052,8 +1091,8 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
-		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, ENEMY, PLAYER);
+		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));	
 	}
 
 	//Enemy 2
@@ -1084,16 +1123,29 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		float shrinkY = 0.f;
 		b2Body* tempBody;
 		b2BodyDef tempDef;
-		tempDef.type = b2_staticBody;
-		tempDef.position.Set(float32(500.f), float32(6.f));
+		tempDef.type = b2_dynamicBody;
+		tempDef.position.Set(float32(50.f), float32(6.f));
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, ENEMY, PLAYER);
+		
+		tempBody->SetFixedRotation(true);
+		tempPhsBody.SetRotationAngleDeg(0.f);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+		tempPhsBody.SetGravityScale(0.1f);
+
+		/*if ()
+		{
+			tempBody->ApplyLinearImpulseToCenter(b2Vec2(-500.f, 0.f), true);
+		}
+		else
+		{
+			tempBody->ApplyForceToCenter(b2Vec2(1.f, 0.f), true);
+		}*/
 	}
 
-	//Enemy 2
+	//Enemy 3
 	{
 		//Creates entity
 		auto entity = ECS::CreateEntity();
@@ -1126,8 +1178,9 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), true, ENEMY, PLAYER);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+
 	}
 	
 
@@ -1137,11 +1190,8 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 void CartCraze::Update()
 {
-
 	ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
-
-
 }
 
 void CartCraze::GUI()
@@ -1347,7 +1397,6 @@ void CartCraze::GUIWindowTwo()
 
 	ImGui::End();
 }
-
 
 
 

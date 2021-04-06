@@ -39,6 +39,19 @@ void Trigger::SetTargetEntities(std::vector<int> entities)
 	m_targetEntities = entities;
 }
 
+void Trigger::enemyTurn()
+{
+	if (eneTurn == false)
+	{
+		eneTurn = true;
+	}
+
+	if (eneTurn == true)
+	{
+		eneTurn = false;
+	}
+}
+
 std::vector<int> Trigger::GetTargetEntities()
 {
 	return m_targetEntities;
