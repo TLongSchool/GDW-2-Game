@@ -92,13 +92,14 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		//Main menu camera target
 		{
 			auto entity = ECS::CreateEntity();
+			mainMenuCamera = entity;
 
 			ECS::AttachComponent<Transform>(entity);
 
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-20000.f, 0.f, 0.f));
 		}
 
-		//Start Game Button
+		//Title logo
 		{
 			auto entity = ECS::CreateEntity();
 
@@ -108,18 +109,199 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 
 			//Set up components
-			std::string fileName = "Start_Button.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 80, 30);
-			ECS::GetComponent<Sprite>(entity).SetTransparency(0.75);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-20000.f, 10.f, 1.f));
+			std::string fileName = "title_logo.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 280, 120);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-20000.f, 120.f, 1.f));
 		}
+
+		//Start Game Button
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "Start_Button.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 150, 60);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-20000.f, -10.f, 1.f));
+			ECS::GetComponent<ButtonSelect>(entity).isSelected = true;
+
+			mainMenuButtons.push_back(entity);
+		}
+
+		//Controls button
+		{	
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "Controls_Button.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 150, 60);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(0.75);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-20000.f, -80.f, 1.f));
+
+			mainMenuButtons.push_back(entity);
+		}
+
+		//Exit button
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "Exit_Button.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 150, 60);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(0.75);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-20000.f, -150.f, 1.f));
+
+			mainMenuButtons.push_back(entity);
+		}
+
+		
 	}
 
 	//Character Select Menu
 	{
 		//Character select menu camera target
 		{
+			auto entity = ECS::CreateEntity();
+			characterMenuCamera = entity;
 
+			ECS::AttachComponent<Transform>(entity);
+
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-30000.f, 0.f, 0.f));
+		}
+
+		//Banana select button
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "Banana_Description.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 350, 150);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-30000.f, -100.f, 1.f));
+			ECS::GetComponent<ButtonSelect>(entity).isSelected = true;
+
+			characterSelectButtons.push_back(entity);
+		}
+
+		//Banana select character sprite
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "banana.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 130, 130);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-30200.f, 90.f, 1.f));
+			ECS::GetComponent<ButtonSelect>(entity).isSelected = true;
+
+			characterSelectButtons.push_back(entity);
+		}
+
+		//Apple select button
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "Apple_Description.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 350, 150);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-30000.f, -100.f, 1.f));
+
+			characterSelectButtons.push_back(entity);
+		}
+
+		//Apple select character sprite
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "apple.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 130, 130);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(0.75f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-30000.f, 90.f, 1.f));
+
+			characterSelectButtons.push_back(entity);
+		}
+
+		//Watermelon select button
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "Watermelon_Description.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 350, 150);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-30000.f, -100.f, 1.f));
+
+			characterSelectButtons.push_back(entity);
+		}
+
+		//Watermelon select character sprite
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<ButtonSelect>(entity);
+
+
+			//Set up components
+			std::string fileName = "watermelon.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 130, 130);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(0.75);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-29800.f, 90.f, 1.f));
+
+			characterSelectButtons.push_back(entity);
 		}
 	}
 
@@ -127,7 +309,12 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 	{
 		//Controls menu camera target
 		{
+			auto entity = ECS::CreateEntity();
+			controlsMenuCamera = entity;
 
+			ECS::AttachComponent<Transform>(entity);
+
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000.f, 0.f, 0.f));
 		}
 	}
 
@@ -151,7 +338,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<PlayerStats>(entity);
 
 			//Sets up the components
-			std::string fileName = "AppleTempSprite.jpg";
+			std::string fileName = "apple.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 35, 25);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
@@ -291,7 +478,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<PhysicsBody>(entity);
 
 			//Sets up components
-			std::string fileName = "platform_mk_ii.png";
+			std::string fileName = "boxSprite.jpg";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 400, 10);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
 
@@ -307,7 +494,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY | OBJECTS | HEXAGON);
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY | OBJECTS | HEXAGON), 0, 1000.f;
 			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 
 		}
@@ -1212,12 +1399,20 @@ void CartCraze::Update()
 {
 	if (mainMenu == true)
 	{
-		//ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus
+		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(mainMenuCamera));
+		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(mainMenuCamera));
 	}
 
 	if (controlsMenu == true)
 	{
+		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(controlsMenuCamera));
+		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(controlsMenuCamera));
+	}
 
+	if (characterMenu == true)
+	{
+		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(characterMenuCamera));
+		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(characterMenuCamera));
 	}
 
 	if (gameRun == true)
@@ -1505,6 +1700,218 @@ void CartCraze::KeyboardDown()
 	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
 	std::string fileName = "LinkStandby.png";
 
+	if (mainMenu == true)
+	{
+		if (Input::GetKeyDown(Key::W))
+		{
+			if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected == true)
+			{
+				ECS::GetComponent<Sprite>(mainMenuButtons[0]).SetTransparency(0.75);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected = true;
+				ECS::GetComponent<Sprite>(mainMenuButtons[2]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected = false;
+			}
+			else if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[1]).isSelected == true)
+			{
+				ECS::GetComponent<Sprite>(mainMenuButtons[1]).SetTransparency(0.75);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected = true;
+				ECS::GetComponent<Sprite>(mainMenuButtons[0]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[1]).isSelected = false;
+
+			}
+			else if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected == true)
+			{
+				ECS::GetComponent<Sprite>(mainMenuButtons[2]).SetTransparency(0.75);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[1]).isSelected = true;
+				ECS::GetComponent<Sprite>(mainMenuButtons[1]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected = false;
+			}
+		}
+		if (Input::GetKeyDown(Key::S))
+		{
+			if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected = false;
+				ECS::GetComponent<Sprite>(mainMenuButtons[0]).SetTransparency(0.75);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[1]).isSelected = true;
+				ECS::GetComponent<Sprite>(mainMenuButtons[1]).SetTransparency(1.f);
+			}
+			else if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[1]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[1]).isSelected = false;
+				ECS::GetComponent<Sprite>(mainMenuButtons[1]).SetTransparency(0.75);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected = true;
+				ECS::GetComponent<Sprite>(mainMenuButtons[2]).SetTransparency(1.f);
+			}
+			else if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected = false;
+				ECS::GetComponent<Sprite>(mainMenuButtons[2]).SetTransparency(0.75);
+				ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected = true;
+				ECS::GetComponent<Sprite>(mainMenuButtons[0]).SetTransparency(1.f);
+			}
+		}
+
+		if (Input::GetKeyDown(Key::Enter))
+		{
+			if (mainMenu == true)
+			{
+				if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected == true) 
+				{
+					gameRun = false;
+					mainMenu = false;
+					characterMenu = true;
+					controlsMenu = false;
+					gameWin = false;
+					gameOver = false;
+				}
+				else if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[1]).isSelected == true)
+				{
+					gameRun = false;
+					mainMenu = false;
+					characterMenu = false;
+					controlsMenu = true;
+					gameWin = false;
+					gameOver = false;
+				}
+				else if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected == true)
+				{
+					exit(0);
+				}
+			}
+		}
+	}
+
+	else if (controlsMenu == true)
+	{
+		if (Input::GetKeyDown(Key::Enter))
+		{
+			gameRun = false;
+			mainMenu = true;
+			characterMenu = false;
+			controlsMenu = false;
+			gameWin = false;
+			gameOver = false;
+		}
+	}
+
+	else if (characterMenu == true)
+	{
+		if (Input::GetKeyDown(Key::D))
+		{
+			if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[2]).isSelected = true;
+				ECS::GetComponent<Sprite>(characterSelectButtons[2]).SetTransparency(1.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[3]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected = false;
+				ECS::GetComponent<Sprite>(characterSelectButtons[0]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[1]).SetTransparency(0.75f);
+			}
+			else if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[2]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[4]).isSelected = true;
+				ECS::GetComponent<Sprite>(characterSelectButtons[4]).SetTransparency(1.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[5]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[2]).isSelected = false;
+				ECS::GetComponent<Sprite>(characterSelectButtons[2]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[3]).SetTransparency(0.75f);
+			}
+			else if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[4]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected = true;
+				ECS::GetComponent<Sprite>(characterSelectButtons[0]).SetTransparency(1.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[1]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[4]).isSelected = false;
+				ECS::GetComponent<Sprite>(characterSelectButtons[4]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[5]).SetTransparency(0.75f);
+			}
+		}
+
+		if (Input::GetKeyDown(Key::A))
+		{
+			if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[4]).isSelected = true;
+				ECS::GetComponent<Sprite>(characterSelectButtons[4]).SetTransparency(1.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[5]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected = false;
+				ECS::GetComponent<Sprite>(characterSelectButtons[0]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[1]).SetTransparency(0.75f);
+			}
+			else if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[2]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected = true;
+				ECS::GetComponent<Sprite>(characterSelectButtons[0]).SetTransparency(1.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[1]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[2]).isSelected = false;
+				ECS::GetComponent<Sprite>(characterSelectButtons[2]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[3]).SetTransparency(0.75f);
+			}
+			else if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[4]).isSelected == true)
+			{
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[2]).isSelected = true;
+				ECS::GetComponent<Sprite>(characterSelectButtons[2]).SetTransparency(1.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[3]).SetTransparency(1.f);
+				ECS::GetComponent<ButtonSelect>(characterSelectButtons[4]).isSelected = false;
+				ECS::GetComponent<Sprite>(characterSelectButtons[4]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(characterSelectButtons[5]).SetTransparency(0.75f);
+			}
+		}
+
+		if (Input::GetKeyDown(Key::Enter))
+		{
+			if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected == true)
+			{
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = false;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = false;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = true;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 2;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 450000;
+				fileName = "banana.png";
+				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+				gameRun = true;
+				mainMenu = false;
+				characterMenu = false;
+				controlsMenu = false;
+				gameWin = false;
+				gameOver = false;
+			}
+			else if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[2]).isSelected == true)
+			{
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = false;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = false;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = true;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 3;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 350000;
+				fileName = "apple.png";
+				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+				gameRun = true;
+				mainMenu = false;
+				characterMenu = false;
+				controlsMenu = false;
+				gameWin = false;
+				gameOver = false;
+			}
+			else if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[4]).isSelected == true)
+			{
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = false;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = false;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = true;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 5;
+				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 200000;
+				fileName = "watermelon.png";
+				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+				gameRun = true;
+				mainMenu = false;
+				characterMenu = false;
+				controlsMenu = false;
+				gameWin = false;
+				gameOver = false;
+			}
+		}
+	}
+
 	if (Input::GetKeyDown(Key::T))
 	{
 		PhysicsBody::SetDraw(!PhysicsBody::GetDraw());
@@ -1578,16 +1985,31 @@ void CartCraze::KeyboardDown()
 	}
 	if (Input::GetKeyDown(Key::Escape))
 	{
-		//gameRun = false;
-		//mainMenu = true;
-		//controlsMenu = false;
-		//gameWin = false;
-		//gameOver = false;
+		gameRun = false;
+		mainMenu = true;
+		controlsMenu = false;
+		characterMenu = false;
+		gameWin = false;
+		gameOver = false;
+	}
+
+	if (Input::GetKeyDown(Key::M))
+	{
+		gameRun = true;
+		mainMenu = false;
+		controlsMenu = false;
+		characterMenu = false;
+		gameWin = false;
+		gameOver = false;
 	}
 	if (Input::GetKeyDown(Key::J))
 	{
 		player.SetPosition(ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).checkPointPos);
 		player.SetVelocity(vec3(0, 0, 0));
+	}
+	if (Input::GetKeyDown(Key::K))
+	{
+		
 	}
 }
 

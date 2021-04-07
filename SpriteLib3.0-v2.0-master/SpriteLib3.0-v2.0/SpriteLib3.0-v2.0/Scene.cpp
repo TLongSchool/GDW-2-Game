@@ -282,7 +282,7 @@ unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the ban
 
 	peelBody = m_physicsWorld->CreateBody(&peelDef);
 
-	peelPhsBody = PhysicsBody(entity, peelBody, float(peelSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, MINE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
+	peelPhsBody = PhysicsBody(entity, peelBody, float(peelSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, MINE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f), 0, 99999.f, 99999.f; //Makes a circle body
 
 	peelBody->SetFixedRotation(true);
 	peelPhsBody.SetRotationAngleDeg(0.f);

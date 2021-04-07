@@ -110,15 +110,15 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 	//Peel mine collision check. For the banana.
 	if ((filterA.categoryBits == MINE) || (filterB.categoryBits == MINE))
 	{
-		if (filterA.categoryBits == GROUND)
-		{
-			ECS::GetComponent<ProjectileCollision>((int)fixtureB->GetBody()->GetUserData()).hasCollided = true;
-		}
-		else if (filterB.categoryBits == GROUND)
-		{
-			ECS::GetComponent<ProjectileCollision>((int)fixtureA->GetBody()->GetUserData()).hasCollided = true;
-		}
-		else if (filterA.categoryBits == ENEMY)
+		//if (filterA.categoryBits == GROUND)
+		//{
+		//	ECS::GetComponent<ProjectileCollision>((int)fixtureB->GetBody()->GetUserData()).hasCollided = true;
+		//}
+		//else if (filterB.categoryBits == GROUND)
+		//{
+		//	ECS::GetComponent<ProjectileCollision>((int)fixtureA->GetBody()->GetUserData()).hasCollided = true;
+		//}
+		if (filterA.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<ProjectileCollision>((int)fixtureB->GetBody()->GetUserData()).hasCollided = true;
 			ECS::GetComponent<EnemyStats>((int)fixtureA->GetBody()->GetUserData()).isStunned = true;

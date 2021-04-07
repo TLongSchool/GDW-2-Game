@@ -9,7 +9,7 @@ public:
 	float speed = 350000; 
 
 	//Bools to determine character type and thus stats/ability.
-	bool isApple = true;
+	bool isApple = false;
 	bool isBanana = false;
 	bool isWaterMelon = false;
 
