@@ -15,9 +15,14 @@ public:
 
 	void AddTargetEntity(int entity);
 	void SetTargetEntities(std::vector<int> entities);
+
+	//turns the enemy
+	void enemyTurn();
+
 	std::vector<int> GetTargetEntities();
 protected:
 	int m_triggerEntity;
 	std::vector<int> m_targetEntities;
+	bool eneTurn = true;
 };
 
