@@ -69,8 +69,8 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 	//Generate the background
 	{
-		int xBackDistRight = 400;
-		int xBackDistLeft = -400;
+		int xBackDistRight = 410;
+		int xBackDistLeft = -410;
 
 		for (int i = 0; i < 25; i++) {
 
@@ -316,6 +316,21 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000.f, 0.f, 0.f));
 		}
+
+		//Controls menu entity
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+
+			//Set up components
+			std::string fileName = "controlswide.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 850.f, 430.f);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000, 0.f, 0.f));
+		}
 	}
 
 
@@ -339,7 +354,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 			//Sets up the components
 			std::string fileName = "apple.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 35, 25);
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 35, 35);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(0.f, 30.f, 2.f));
 			ECS::GetComponent<PlayerStats>(entity).checkPointPos = b2Vec2(0.f, 30.f);
@@ -1278,7 +1293,8 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		}
 
 		//Enemy 1
-		CreateCookieEnemy(500.f, 76.f);
+		unsigned enemy1 = CreateCookieEnemy(500.f, 76.f);
+		enemyStorage.push_back(enemy1);
 
 		////Enemy 1
 		//{
@@ -1430,6 +1446,17 @@ void CartCraze::Update()
 				}
 			}
 		}
+
+		//Checking banana peel stuck status
+		for (int i = 0; i < projectileStorage.size(); i++)
+		{
+			if (ECS::GetComponent<ProjectileCollision>(projectileStorage[i]).isStuck == true)
+			{
+				ECS::GetComponent<PhysicsBody>(projectileStorage[i]).SetVelocity(vec3(0.f, 0.f, 0.f));
+			}
+		}
+
+
 		//Checking for more than 3 banana peels
 		{
 			//if ((ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana == true) && (projectileStorage.capacity()>3))
@@ -1437,6 +1464,43 @@ void CartCraze::Update()
 			//PhysicsBody::m_bodiesToDelete.push_back(projectileStorage[1]);
 			//projectileStorage.erase(projectileStorage.begin());
 			//}
+		}
+
+		//Enemy health/deletion check
+		{
+			for (int i = 0; i < enemyStorage.size(); i++)
+			{
+				if (ECS::GetComponent<EnemyStats>(enemyStorage[i]).health <= 0)
+				{
+					PhysicsBody::m_bodiesToDelete.push_back(enemyStorage[i]);
+					enemyStorage.erase(enemyStorage.begin() + i);
+				}
+			}
+		}
+
+		//Enemy stun check
+		{
+			for (int i = 0; i < enemyStorage.size(); i++)
+			{
+				if (ECS::GetComponent<EnemyStats>(enemyStorage[i]).isStunned == true)
+				{
+					int stunTime = 3;
+					int stunnedAt = Timer::time;
+					ECS::GetComponent<PhysicsBody>(enemyStorage[i]).SetVelocity(vec3(0.f, 0.f, 0.f));
+					ECS::GetComponent<Sprite>(enemyStorage[i]).SetTransparency(0.5f);
+					if (Timer::time >= (stunnedAt + stunTime))
+					{
+						ECS::GetComponent<EnemyStats>(enemyStorage[i]).isStunned = false;
+						ECS::GetComponent<Sprite>(enemyStorage[i]).SetTransparency(1.f);
+						stunnedAt = 0;
+					}
+				}
+			}
+		}
+
+		//Player stun check
+		{
+
 		}
 	}
 
@@ -1702,7 +1766,7 @@ void CartCraze::KeyboardDown()
 
 	if (mainMenu == true)
 	{
-		if (Input::GetKeyDown(Key::W))
+		if (Input::GetKeyDown(Key::W) || Input::GetKeyDown(Key::UpArrow))
 		{
 			if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected == true)
 			{
@@ -1727,7 +1791,7 @@ void CartCraze::KeyboardDown()
 				ECS::GetComponent<ButtonSelect>(mainMenuButtons[2]).isSelected = false;
 			}
 		}
-		if (Input::GetKeyDown(Key::S))
+		if (Input::GetKeyDown(Key::S) || Input::GetKeyDown(Key::DownArrow))
 		{
 			if (ECS::GetComponent<ButtonSelect>(mainMenuButtons[0]).isSelected == true)
 			{
@@ -1797,7 +1861,7 @@ void CartCraze::KeyboardDown()
 
 	else if (characterMenu == true)
 	{
-		if (Input::GetKeyDown(Key::D))
+		if (Input::GetKeyDown(Key::D) || Input::GetKeyDown(Key::RightArrow))
 		{
 			if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected == true)
 			{
@@ -1828,7 +1892,7 @@ void CartCraze::KeyboardDown()
 			}
 		}
 
-		if (Input::GetKeyDown(Key::A))
+		if (Input::GetKeyDown(Key::A) || Input::GetKeyDown(Key::LeftArrow))
 		{
 			if (ECS::GetComponent<ButtonSelect>(characterSelectButtons[0]).isSelected == true)
 			{
@@ -1870,6 +1934,7 @@ void CartCraze::KeyboardDown()
 				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 450000;
 				fileName = "banana.png";
 				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+				//ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).SetGravityScale(0.8f);
 				gameRun = true;
 				mainMenu = false;
 				characterMenu = false;
@@ -1902,6 +1967,7 @@ void CartCraze::KeyboardDown()
 				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 200000;
 				fileName = "watermelon.png";
 				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+				ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).SetMass((ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetMass())*0.6);
 				gameRun = true;
 				mainMenu = false;
 				characterMenu = false;
@@ -1949,54 +2015,49 @@ void CartCraze::KeyboardDown()
 			}
 		}
 	}
-	if (Input::GetKeyDown(Key::G))
-	{
-		if (gameRun == true)
-		{
-			//Set up player stats and sprite and switches the character with a keypress; temp solution until a better character selection system can be made.
-			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon == true)
-			{
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = false;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = true;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 3;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 350000;
-				fileName = "AppleTempSprite.jpg";
-				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
-			}
-			else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple == true)
-			{
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = false;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = true;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 2;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 450000;
-				fileName = "BananaTempSprite.jpg";
-				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
-			}
-			else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana == true)
-			{
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = false;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = true;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 5;
-				ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 200000;
-				fileName = "watermelon.png";
-				ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
-			}
-		}
-	}
+	//if (Input::GetKeyDown(Key::G))
+	//{
+	//	if (gameRun == true)
+	//	{
+	//		//Set up player stats and sprite and switches the character with a keypress; temp solution until a better character selection system can be made.
+	//		if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon == true)
+	//		{
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = false;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = true;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 3;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 350000;
+	//			fileName = "AppleTempSprite.jpg";
+	//			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+	//		}
+	//		else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple == true)
+	//		{
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple = false;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = true;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 2;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 450000;
+	//			fileName = "BananaTempSprite.jpg";
+	//			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+	//		}
+	//		else if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana == true)
+	//		{
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana = false;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon = true;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health = 5;
+	//			ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed = 200000;
+	//			fileName = "watermelon.png";
+	//			ECS::GetComponent<Sprite>(MainEntities::MainPlayer()).LoadSprite(fileName, 35, 35);
+	//		}
+	//	}
+	//}
 	if (Input::GetKeyDown(Key::Escape))
 	{
-		gameRun = false;
-		mainMenu = true;
-		controlsMenu = false;
-		characterMenu = false;
-		gameWin = false;
-		gameOver = false;
+		exit(0);
 	}
 
 	if (Input::GetKeyDown(Key::M))
 	{
-		gameRun = true;
-		mainMenu = false;
+		gameRun = false;
+		mainMenu = true;
 		controlsMenu = false;
 		characterMenu = false;
 		gameWin = false;

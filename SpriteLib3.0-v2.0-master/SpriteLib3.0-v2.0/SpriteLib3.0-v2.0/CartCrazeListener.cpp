@@ -15,6 +15,8 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 	b2Fixture* fixtureA = contact->GetFixtureA();
 	b2Fixture* fixtureB = contact->GetFixtureB();
 
+
+
 	bool sensorA = fixtureA->IsSensor();
 	bool sensorB = fixtureB->IsSensor();
 
@@ -51,11 +53,11 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 	//Player and enemy contact check, for determining if player has taken damage.
 	if ((filterA.categoryBits == ENEMY && filterB.categoryBits == PLAYER) || (filterB.categoryBits == ENEMY && filterA.categoryBits == PLAYER))
 	{
-		if (filterA.categoryBits == PLAYER)
+		if (filterA.categoryBits == PLAYER && ECS::GetComponent<EnemyStats>((int)fixtureB->GetBody()->GetUserData()).isStunned == false)
 		{
 			ECS::GetComponent<PlayerStats>((int)fixtureA->GetBody()->GetUserData()).health -= 1;
 		}
-		else if (filterB.categoryBits == PLAYER)
+		else if (filterB.categoryBits == PLAYER && ECS::GetComponent<EnemyStats>((int)fixtureA->GetBody()->GetUserData()).isStunned == false)
 		{
 			ECS::GetComponent<PlayerStats>((int)fixtureB->GetBody()->GetUserData()).health -= 1;
 		}
@@ -110,15 +112,15 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 	//Peel mine collision check. For the banana.
 	if ((filterA.categoryBits == MINE) || (filterB.categoryBits == MINE))
 	{
-		//if (filterA.categoryBits == GROUND)
-		//{
-		//	ECS::GetComponent<ProjectileCollision>((int)fixtureB->GetBody()->GetUserData()).hasCollided = true;
-		//}
-		//else if (filterB.categoryBits == GROUND)
-		//{
-		//	ECS::GetComponent<ProjectileCollision>((int)fixtureA->GetBody()->GetUserData()).hasCollided = true;
-		//}
-		if (filterA.categoryBits == ENEMY)
+		if (filterA.categoryBits == GROUND)
+		{
+			ECS::GetComponent<ProjectileCollision>((int)fixtureB->GetBody()->GetUserData()).isStuck = true;
+		}
+		else if (filterB.categoryBits == GROUND)
+		{
+			ECS::GetComponent<ProjectileCollision>((int)fixtureA->GetBody()->GetUserData()).isStuck = true;
+		}
+		else if (filterA.categoryBits == ENEMY)
 		{
 			ECS::GetComponent<ProjectileCollision>((int)fixtureB->GetBody()->GetUserData()).hasCollided = true;
 			ECS::GetComponent<EnemyStats>((int)fixtureA->GetBody()->GetUserData()).isStunned = true;

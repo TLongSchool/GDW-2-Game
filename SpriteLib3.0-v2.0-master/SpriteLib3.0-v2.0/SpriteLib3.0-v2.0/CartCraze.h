@@ -32,6 +32,7 @@ public:
 	std::vector<int> projectileStorage;
 	std::vector<int> mainMenuButtons;
 	std::vector<int> characterSelectButtons;
+	std::vector<int> enemyStorage;
 
 	bool gameRun = false;
 	bool gameOver = false;

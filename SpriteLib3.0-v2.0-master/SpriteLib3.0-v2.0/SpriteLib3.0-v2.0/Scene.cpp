@@ -146,8 +146,8 @@ unsigned Scene::CreateSeedProjectile(float posX, float posY) //Setup for the wat
 	ECS::AttachComponent<ProjectileCollision>(entity);
 
 	//Setting up components
-	std::string fileName = "BeachBall.png";
-	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 5);
+	std::string fileName = "watermelon_projectile.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 5);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 10.f));
 
@@ -155,6 +155,7 @@ unsigned Scene::CreateSeedProjectile(float posX, float posY) //Setup for the wat
 	auto& seedPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
 	float shrinkX = 0.f;
+	float shrinkY = 5.f;
 
 	b2Body* seedBody;
 	b2BodyDef seedDef;
@@ -172,7 +173,7 @@ unsigned Scene::CreateSeedProjectile(float posX, float posY) //Setup for the wat
 
 	seedBody = m_physicsWorld->CreateBody(&seedDef);
 
-	seedPhsBody = PhysicsBody(entity, seedBody, float(seedSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, PROJECTILE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
+	seedPhsBody = PhysicsBody(entity, seedBody, float(seedSpr.GetWidth() - shrinkX), float (seedSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, PROJECTILE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
 
 	seedBody->SetFixedRotation(true);
 	seedPhsBody.SetRotationAngleDeg(0.f);
@@ -201,8 +202,8 @@ unsigned Scene::CreateJuiceProjectile(float posX, float posY) //Setup for the ap
 	ECS::AttachComponent<ProjectileCollision>(entity);
 
 	//Setting up components
-	std::string fileName = "BeachBall.png";
-	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 10, 5);
+	std::string fileName = "juiceprojectile.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 20, 5);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 10.f));
 
@@ -210,6 +211,7 @@ unsigned Scene::CreateJuiceProjectile(float posX, float posY) //Setup for the ap
 	auto& juicePhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
 	float shrinkX = 0.f;
+	float shrinkY = 5.f;
 
 	b2Body* juiceBody;
 	b2BodyDef juiceDef;
@@ -227,12 +229,12 @@ unsigned Scene::CreateJuiceProjectile(float posX, float posY) //Setup for the ap
 
 	juiceBody = m_physicsWorld->CreateBody(&juiceDef);
 
-	juicePhsBody = PhysicsBody(entity, juiceBody, float(juiceSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
+	juicePhsBody = PhysicsBody(entity, juiceBody, float(juiceSpr.GetWidth() - shrinkX), float (juiceSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, FRIENDLY, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
 
 	juiceBody->SetFixedRotation(true);
 	juicePhsBody.SetRotationAngleDeg(0.f);
 	juicePhsBody.SetColor(vec4(0.f, 20.f, 10.f, 0.f));
-	juicePhsBody.SetGravityScale(0.2f);
+	juicePhsBody.SetGravityScale(0.05f);
 	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
 	{
 		juiceBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 0.f), true);
@@ -240,6 +242,7 @@ unsigned Scene::CreateJuiceProjectile(float posX, float posY) //Setup for the ap
 	else
 	{
 		juiceBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 0.f), true);
+		//ECS::GetComponent<Transform>(entity).SetRotationAngleZ(180.f);
 	}
 	return entity;
 }
@@ -256,8 +259,8 @@ unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the ban
 	ECS::AttachComponent<ProjectileCollision>(entity);
 
 	//Setting up components
-	std::string fileName = "hexagon.png";
-	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 5, 5);
+	std::string fileName = "banana_peel.png";
+	ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 18);
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 10.f));
 
@@ -265,6 +268,7 @@ unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the ban
 	auto& peelPhsBody = ECS::GetComponent<PhysicsBody>(entity);
 
 	float shrinkX = 0.f;
+	float shrinkY = 10.f;
 
 	b2Body* peelBody;
 	b2BodyDef peelDef;
@@ -282,19 +286,19 @@ unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the ban
 
 	peelBody = m_physicsWorld->CreateBody(&peelDef);
 
-	peelPhsBody = PhysicsBody(entity, peelBody, float(peelSpr.GetWidth() - shrinkX), vec2(0.f, 0.f), false, MINE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f), 0, 99999.f, 99999.f; //Makes a circle body
+	peelPhsBody = PhysicsBody(entity, peelBody, float(peelSpr.GetWidth() - shrinkX), float(peelSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, MINE, ENEMY | OBJECTS | ENVIRONMENT | GROUND, 0.f, 0.f); //Makes a circle body
 
 	peelBody->SetFixedRotation(true);
 	peelPhsBody.SetRotationAngleDeg(0.f);
 	peelPhsBody.SetColor(vec4(0.f, 20.f, 10.f, 0.f));
-	peelPhsBody.SetGravityScale(0.2f);
+	peelPhsBody.SetGravityScale(0.9f);
 	if (ECS::GetComponent<PlayerFacing>(MainEntities::MainPlayer()).isFacingRight == true)
 	{
-		peelBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 50000.f), true);
+		peelBody->ApplyLinearImpulseToCenter(b2Vec2(980000.f, 980000.f), true);
 	}
 	else
 	{
-		peelBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 50000.f), true);
+		peelBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 980000.f), true);
 	}
 	return entity;
 }
