@@ -1066,7 +1066,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		//Sets up components
 		std::string fileName = "boxSprite.jpg";
 		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-		ECS::GetComponent<Trigger*>(entity) = new TranslateTrigger();
+		ECS::GetComponent<Trigger*>(entity) = new LadderTrigger();
 		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
 		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(climb);
 		LadderTrigger* temp = (LadderTrigger*)ECS::GetComponent<Trigger*>(entity);
@@ -1084,7 +1084,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-		tempPhsBody = PhysicsBody(entity, tempBody, float(40.f - shrinkX), float(40.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+		tempPhsBody = PhysicsBody(entity, tempBody, float(40.f - shrinkX), float(100.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
 		tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 	}
 
@@ -1379,7 +1379,7 @@ void CartCraze::KeyboardHold()
 	{
 		if (canClimb.m_canClimb == true)
 		{
-			player.GetBody()->ApplyForceToCenter(b2Vec2(0.f * speed, 400000.f), true);
+			player.GetBody()->ApplyForceToCenter(b2Vec2(0.f * speed, 500000.f), true);
 		}
 	}
 	if (Input::GetKey(Key::S))

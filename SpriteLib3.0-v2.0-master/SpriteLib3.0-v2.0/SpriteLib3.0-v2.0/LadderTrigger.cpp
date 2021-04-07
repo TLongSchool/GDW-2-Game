@@ -1,23 +1,31 @@
 #include "LadderTrigger.h"
 #include "ECS.h"
+#include "CartCraze.h"
+#include "Input.h"
 
 void LadderTrigger::OnTrigger()
 {
-	climb = true;
+	insideTrigger = true;
 	Trigger::OnTrigger();
 }
 
 void LadderTrigger::OnEnter()
 {
+	insideTrigger = true;
+	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
+	float speed = 2.f;
+
 	Trigger::OnEnter();
-	for (int i = 0; i < m_targetEntities.size(); i++)
+	player.GetBody()->ApplyForceToCenter(b2Vec2(0.f * speed, 900000000.f), true);
+
+	if (insideTrigger && Input::GetKey(Key::W))
 	{
-		climb = true;
+		player.GetBody()->ApplyForceToCenter(b2Vec2(0.f * speed, 900000000.f), true);
 	}
 }
 
 void LadderTrigger::OnExit()
 {
-	climb = false;
+	insideTrigger = false;
 	Trigger::OnExit();
 }

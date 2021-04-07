@@ -11,6 +11,7 @@ public:
 	void OnExit() override;
 
 	bool climb = false;
+	bool insideTrigger = false;
 protected:
 };
 
