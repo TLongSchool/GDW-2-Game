@@ -303,7 +303,7 @@ unsigned Scene::CreatePeelProjectile(float posX, float posY) //Setup for the ban
 	return entity;
 }
 
-unsigned Scene::CreateCookieEnemy(float posX, float posY)
+unsigned Scene::CreateCookieEnemy(float posX, float posY, bool eneTurn)
 {
 	//Creates entity
 	auto entity = ECS::CreateEntity();
@@ -313,7 +313,7 @@ unsigned Scene::CreateCookieEnemy(float posX, float posY)
 	ECS::AttachComponent<Transform>(entity);
 	ECS::AttachComponent<PhysicsBody>(entity);
 	ECS::AttachComponent<EnemyStats>(entity);
-	//ECS::AttachComponent<Trigger*>(entity);
+	ECS::AttachComponent<Trigger*>(entity);
 
 	//Sets up components
 	std::string fileName = "evil_cookie_static.png";
@@ -321,6 +321,10 @@ unsigned Scene::CreateCookieEnemy(float posX, float posY)
 	ECS::GetComponent<Transform>(entity).SetPosition(vec3(posX, posY, 3.f));
 	ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 	ECS::GetComponent<EnemyStats>(entity).health = 3;
+	ECS::GetComponent<Trigger*>(entity) = new EnemyTrigger();
+	ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+	ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(entity);
+	EnemyTrigger* temp = (EnemyTrigger*)ECS::GetComponent<Trigger*>(entity);
 
 	auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 	auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -336,11 +340,22 @@ unsigned Scene::CreateCookieEnemy(float posX, float posY)
 
 	tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), false, ENEMY, PLAYER | GROUND | PROJECTILE | FRIENDLY);
 	tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
+	tempPhsBody.SetGravityScale(0.f);
+
+	if (eneTurn == false)
+	{
+		tempBody->ApplyLinearImpulseToCenter(b2Vec2(-35000.f, 0.f), true);
+	}
+	
+	else if (eneTurn == true)
+	{
+		tempBody->ApplyLinearImpulseToCenter(b2Vec2(35000.f, 0.f), true);
+	}
 
 	return entity;
 }
 
-unsigned Scene::CreateIcecreamEnemy(float posX, float posY)
+unsigned Scene::CreateIcecreamEnemy(float posX, float posY, bool eneTurn)
 {
 	//Creates entity
 	auto entity = ECS::CreateEntity();

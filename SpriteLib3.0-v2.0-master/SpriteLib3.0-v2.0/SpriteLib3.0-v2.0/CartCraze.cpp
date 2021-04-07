@@ -1,5 +1,6 @@
 #include "CartCraze.h"
 #include "Utilities.h"
+#include "Trigger.h"
 
 #include <random>
 
@@ -1293,7 +1294,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		}
 
 		//Enemy 1
-		unsigned enemy1 = CreateCookieEnemy(500.f, 76.f);
+		unsigned enemy1 = CreateCookieEnemy(500.f, 72.f, false);
 		enemyStorage.push_back(enemy1);
 
 		////Enemy 1
@@ -1406,6 +1407,45 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		//	tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), false, ENEMY, PLAYER);
 		//	tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 		//}
+
+	//Turn trigger 1 
+	{
+		//Creates entity
+		auto entity = ECS::CreateEntity();
+
+		//Add components
+		ECS::AttachComponent<Sprite>(entity);
+		ECS::AttachComponent<Transform>(entity);
+		ECS::AttachComponent<PhysicsBody>(entity);
+		ECS::AttachComponent<Trigger*>(entity);
+
+		//Sets up components
+		std::string fileName = "greybox.jpg";
+		ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 30);
+		ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+		ECS::GetComponent<Sprite>(entity).SetTransparency(0.f);
+		ECS::GetComponent<Trigger*>(entity) = new ReverseTrigger();
+		ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+		ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(entity);
+		ReverseTrigger* temp = (ReverseTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+		auto& tempSpr = ECS::GetComponent<Sprite>(entity);
+		auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+		float shrinkX = 0.f;
+		float shrinkY = 0.f;
+		b2Body* tempBody;
+		b2BodyDef tempDef;
+		tempDef.type = b2_staticBody;
+		tempDef.position.Set(float32(230.f), float32(76.f));
+
+		tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+		tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX),
+			float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, TRIGGER, ENEMY);
+		tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
+
+	}
 		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
 	}
@@ -1720,7 +1760,6 @@ void CartCraze::GUIWindowTwo()
 
 	ImGui::End();
 }
-
 
 
 

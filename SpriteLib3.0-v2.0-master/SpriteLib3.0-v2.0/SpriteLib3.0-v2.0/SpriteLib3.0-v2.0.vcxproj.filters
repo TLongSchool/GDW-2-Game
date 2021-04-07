@@ -58,6 +58,7 @@
     <ClCompile Include="VignetteEffect.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="XInput.cpp" />
+    <ClCompile Include="ReverseTrigger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h" />
@@ -124,5 +125,6 @@
     <ClInclude Include="Xinput.h" />
     <ClInclude Include="EnemyStats.h" />
     <ClInclude Include="ButtonSelect.h" />
+    <ClInclude Include="ReverseTrigger.h" />
   </ItemGroup>
 </Project>
