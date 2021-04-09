@@ -2,6 +2,7 @@
 #include "Utilities.h"
 #include "Trigger.h"
 #include "LadderTrigger.h"
+#include <iostream>
 #include <random>
 
 CartCraze::CartCraze(std::string name)
@@ -343,7 +344,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 			ECS::AttachComponent<Transform>(entity);
 
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000.f, 0.f, 0.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-50000.f, 0.f, 0.f));
 		}
 
 		//Victory screen entity
@@ -355,7 +356,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Transform>(entity);
 
 			//Set up components
-			std::string fileName = "controlswide.png";
+			std::string fileName = "Victory_Screen.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 850.f, 430.f);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-50000, 0.f, 0.f));
@@ -371,7 +372,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 			ECS::AttachComponent<Transform>(entity);
 
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000.f, 0.f, 0.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10000.f, 10000.f, 0.f));
 		}
 
 		//Game over entity
@@ -383,10 +384,10 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<Transform>(entity);
 
 			//Set up components
-			std::string fileName = "controlswide.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 850.f, 430.f);
+			std::string fileName = "Game_Over_Screen.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 780.f, 430.f);
 			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000, 0.f, 0.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-10000, 10000.f, 0.f));
 		}
 	}
 
@@ -482,7 +483,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 				std::string fileName = "heartfull.png";
 				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
-				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
+				ECS::GetComponent<Transform>(entity).SetPosition(-200, 180, 10);
 
 				healthSpriteStorage.push_back(entity);
 			}
@@ -496,35 +497,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 				std::string fileName = "heartfull.png";
 				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
-				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
-
-				healthSpriteStorage.push_back(entity);
-			}
-			//Heart 5
-			{
-				auto entity = ECS::CreateEntity();
-
-				//Add Components
-				ECS::AttachComponent<Sprite>(entity);
-				ECS::AttachComponent<Transform>(entity);
-
-				std::string fileName = "heartfull.png";
-				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
-				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
-
-				healthSpriteStorage.push_back(entity);
-			}
-			//Heart 1
-			{
-				auto entity = ECS::CreateEntity();
-
-				//Add Components
-				ECS::AttachComponent<Sprite>(entity);
-				ECS::AttachComponent<Transform>(entity);
-
-				std::string fileName = "heartfull.png";
-				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
-				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
+				ECS::GetComponent<Transform>(entity).SetPosition(-150, 180, 10);
 
 				healthSpriteStorage.push_back(entity);
 			}
@@ -1451,7 +1424,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Set up components
 			std::string fileName = "cart.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 200, 190);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(3100.f, 0.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(3150.f, 0.f, 2.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1464,7 +1437,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			tempDef.position.Set(float32(3100.f), float32(-120.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, FINISH, PLAYER);
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, FINISH, PLAYER);
 			tempPhsBody.SetColor(vec4(20.f, 1.f, 19.f, 5.f));
 
 		}
@@ -1653,11 +1626,7 @@ void CartCraze::Update()
 		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOverCamera));
 	}
 
-	if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).playerWon == true)
-	{
-		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
-		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
-	}
+
 
 	if (gameRun == true)
 	{
@@ -1731,24 +1700,74 @@ void CartCraze::Update()
 
 		}
 
-		//Player health check
+		//Health UI and Health Check
 		{
-			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon)
-			{
 
+			if (gameRun == true)
+			{
+				//Health UI movement
+				{
+					ECS::GetComponent<Transform>(healthSpriteStorage[0]).SetPosition(vec3((ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().x - 300), (ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().y + 170), 10));
+					ECS::GetComponent<Transform>(healthSpriteStorage[1]).SetPosition(vec3((ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().x - 250), (ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().y + 170), 10));
+					ECS::GetComponent<Transform>(healthSpriteStorage[2]).SetPosition(vec3((ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().x - 200), (ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().y + 170), 10));
+					ECS::GetComponent<Transform>(healthSpriteStorage[3]).SetPosition(vec3((ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().x - 150), (ECS::GetComponent<Camera>(MainEntities::MainCamera()).GetPosition().y + 170), 10));
+				}
+
+				//Character check
+				if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isBanana)
+				{
+					ECS::GetComponent<Sprite>(healthSpriteStorage[2]).SetTransparency(0.f);
+					ECS::GetComponent<Sprite>(healthSpriteStorage[3]).SetTransparency(0.f);
+				}
+
+
+				if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple)
+				{
+					ECS::GetComponent<Sprite>(healthSpriteStorage[3]).SetTransparency(0.f);
+				}
+
+				//Health level check
+				if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health < 4)
+				{
+					ECS::GetComponent<Sprite>(healthSpriteStorage[3]).LoadSprite(heartEmpty, 50, 50);
+				}
+				if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health < 3)
+				{
+					ECS::GetComponent<Sprite>(healthSpriteStorage[2]).LoadSprite(heartEmpty, 50, 50);
+				}
+				if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health < 2)
+				{
+					ECS::GetComponent<Sprite>(healthSpriteStorage[1]).LoadSprite(heartEmpty, 50, 50);
+				}
+				if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health < 1)
+				{
+					ECS::GetComponent<Sprite>(healthSpriteStorage[0]).LoadSprite(heartEmpty, 50, 50);
+				}
 			}
 
-
-			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple)
+			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health == 0)
 			{
-
-			}
-
-
-			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health <= 0)
-			{
+				ECS::GetComponent<Sprite>(healthSpriteStorage[0]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(healthSpriteStorage[1]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(healthSpriteStorage[2]).SetTransparency(0.f);
+				ECS::GetComponent<Sprite>(healthSpriteStorage[3]).SetTransparency(0.f);
 				gameOver = true;
+				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOverCamera));
+				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOverCamera));
 			}
+
+		}
+		b2Vec2 playerPosition = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition();
+		if (playerPosition.x > -3100);
+		{
+			ECS::GetComponent<Sprite>(healthSpriteStorage[0]).SetTransparency(0.f);
+			ECS::GetComponent<Sprite>(healthSpriteStorage[1]).SetTransparency(0.f);
+			ECS::GetComponent<Sprite>(healthSpriteStorage[2]).SetTransparency(0.f);
+			ECS::GetComponent<Sprite>(healthSpriteStorage[3]).SetTransparency(0.f);
+			gameWin == true;
+			gameRun == false;
+			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
+			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
 		}
 	}
 
@@ -2320,7 +2339,7 @@ void CartCraze::KeyboardDown()
 		mainMenu = false;
 		controlsMenu = false;
 		characterMenu = false;
-		ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).playerWon == true;
+		ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).playerWon = true;
 		gameOver = false;
 	}
 	if (Input::GetKeyDown(Key::K))
