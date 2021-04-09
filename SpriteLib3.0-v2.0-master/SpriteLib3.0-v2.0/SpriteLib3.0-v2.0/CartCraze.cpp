@@ -708,7 +708,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Sets up components
 			std::string fileName = "ladder.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 1.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -740,7 +740,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Sets up components
 			std::string fileName = "ladder.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 1.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1159,7 +1159,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Sets up components
 			std::string fileName = "ladder.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 1.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1191,7 +1191,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Sets up components
 			std::string fileName = "ladder.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 1.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1223,7 +1223,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Sets up components
 			std::string fileName = "ladder.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 1.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1255,7 +1255,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Sets up components
 			std::string fileName = "ladder.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 40, 30);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 1.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1320,7 +1320,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			//Sets up components
 			std::string fileName = "platform_mk_ii.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 30, 6);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 1.f));
 
 			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
 			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
@@ -1945,6 +1945,7 @@ void CartCraze::Update()
 				ECS::GetComponent<Sprite>(healthSpriteStorage[2]).SetTransparency(0.f);
 				ECS::GetComponent<Sprite>(healthSpriteStorage[3]).SetTransparency(0.f);
 				gameOver = true;
+				gameRun = false;
 				ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOverCamera));
 				ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOverCamera));
 			}
