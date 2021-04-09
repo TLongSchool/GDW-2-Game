@@ -7,6 +7,8 @@
 #include "Xinput.h"
 #include "MainEntities.h"
 #include <SDL2/SDL.h>
+#include "ProjectileCollision.h"
+#include "EnemyStats.h"
 
 
 class Scene
@@ -27,8 +29,13 @@ public:
 	virtual void GUI();
 
 	void AdjustScrollOffset();
-	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top, 
-								float zNear, float zFar, float aspectRatio, bool vertScroll=false, bool horizScroll=false);
+	void CreateCameraEntity(bool mainCamera, float windowWidth, float windowHeight, float left, float right, float bottom, float top,
+		float zNear, float zFar, float aspectRatio, bool vertScroll = false, bool horizScroll = false);
+	unsigned CreateSeedProjectile(float posX, float posY);
+	unsigned CreateJuiceProjectile(float posX, float posY);
+	unsigned CreatePeelProjectile(float posX, float posY);
+	unsigned CreateCookieEnemy(float posX, float posY, bool eneTurnn);
+	unsigned CreateIcecreamEnemy(float posX, float posY, bool eneTurn);
 
 	//Gamepad Input
 	//Because these are virtual you can override them in your inherited classes.

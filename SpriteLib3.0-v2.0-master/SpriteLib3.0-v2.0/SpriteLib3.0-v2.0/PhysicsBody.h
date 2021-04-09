@@ -21,10 +21,14 @@ enum class BodyType
 enum EntityCategories
 {
 	ENVIRONMENT = 0x0001,
-	GROUND		= 0x0002,
-	OBJECTS		= 0x0004,
-	PLAYER		= 0x0008,
-	FRIENDLY	= 0x0016,
+	GROUND      = 0x0002,
+	OBJECTS     = 0x0004,
+	PLAYER      = 0x0008,
+	FRIENDLY    = 0x0016,
+	PROJECTILE  = 0x0017,
+	MINE        = 0x0018,
+	FALLLINE    = 0x0019,
+	FINISH      = 0x0020,
 	ENEMY		= 0x0032,
 	PICKUP		= 0x0064,
 	TRIGGER		= 0x0128,

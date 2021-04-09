@@ -141,6 +141,7 @@
     <ClInclude Include="AnimationSystem.h" />
     <ClInclude Include="BackEnd.h" />
     <ClInclude Include="BloomEffect.h" />
+    <ClInclude Include="ButtonSelect.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraSystem.h" />
     <ClInclude Include="CanClimb.h" />
@@ -148,11 +149,14 @@
     <ClInclude Include="DestroyTrigger.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="EffectManager.h" />
+    <ClInclude Include="EnemyStats.h" />
+    <ClInclude Include="EnemyTrigger.h" />
     <ClInclude Include="FirstCreation.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GrainEffect.h" />
     <ClInclude Include="GreyscaleEffect.h" />
+    <ClInclude Include="PlayerStats.h" />
     <ClInclude Include="HorizontalScroll.h" />
     <ClInclude Include="include\imgui\imconfig.h" />
     <ClInclude Include="include\imgui\imgui.h" />
@@ -173,8 +177,11 @@
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PixelateEffect.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerFacing.h" />
     <ClInclude Include="PostEffect.h" />
+    <ClInclude Include="ProjectileCollision.h" />
     <ClInclude Include="RenderingSystem.h" />
+    <ClInclude Include="ReverseTrigger.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="Selectable.h" />
@@ -210,6 +217,7 @@
     <ClCompile Include="DestroyTrigger.cpp" />
     <ClCompile Include="ECS.cpp" />
     <ClCompile Include="EffectManager.cpp" />
+    <ClCompile Include="EnemyTrigger.cpp" />
     <ClCompile Include="FirstCreation.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -236,6 +244,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PostEffect.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
+    <ClCompile Include="ReverseTrigger.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Selectable.cpp" />
     <ClCompile Include="SelectiveColorEffect.cpp" />
