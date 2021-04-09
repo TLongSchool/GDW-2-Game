@@ -1639,6 +1639,42 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		unsigned enemy1 = CreateCookieEnemy(500.f, 72.f, false);
 		enemyStorage.push_back(enemy1);
 
+		//Enemy 2
+		unsigned enemy2 = CreateCookieEnemy(540.f, 55.f, false);
+		enemyStorage.push_back(enemy2);
+
+		//Enemy 3
+		unsigned enemy3 = CreateCookieEnemy(470.f, 55.f, false);
+		enemyStorage.push_back(enemy3);
+
+		//Enemy 4
+		unsigned enemy4 = CreateCookieEnemy(1040.f, 55.f, false);
+		enemyStorage.push_back(enemy4);
+
+		//Enemy 5
+		unsigned enemy5 = CreateCookieEnemy(1480.f, 55.f, false);
+		enemyStorage.push_back(enemy5);
+
+		//Enemy 6
+		unsigned enemy6 = CreateCookieEnemy(1800.f, 72.f, false);
+		enemyStorage.push_back(enemy6);
+
+		//Enemy 7
+		unsigned enemy7 = CreateCookieEnemy(2080.f, 55.f, false);
+		enemyStorage.push_back(enemy7);
+
+		//Enemy 8
+		unsigned enemy8 = CreateCookieEnemy(2082.f, 55.f, false);
+		enemyStorage.push_back(enemy8);
+
+		//Enemy 9
+		unsigned enemy9 = CreateCookieEnemy(2200.f, 150.f, false);
+		enemyStorage.push_back(enemy9);
+
+		//Enemy 10
+		unsigned enemy10 = CreateCookieEnemy(2180.f, 55.f, false);
+		enemyStorage.push_back(enemy10);
+
 		////Enemy 1
 		//{
 		//	//Creates entity
