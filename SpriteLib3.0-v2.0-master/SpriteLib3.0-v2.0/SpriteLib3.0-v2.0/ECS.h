@@ -16,6 +16,8 @@
 #include "ReverseTrigger.h"
 #include "HorizontalScroll.h"
 #include "CanJump.h"
+#include "PlayerStats.h"
+#include "CanClimb.h"
 
 
 class ECS abstract

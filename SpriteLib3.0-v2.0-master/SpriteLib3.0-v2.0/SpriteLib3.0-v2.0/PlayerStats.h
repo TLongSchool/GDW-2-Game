@@ -7,11 +7,15 @@ public:
 	int health = 3;
 	int lives = 3; //Lives start at the same value for all characters
 	float speed = 350000; 
+	bool isFrozen = false;
+	bool playerWon = false;
+	bool playerLost = false;
 
 	//Bools to determine character type and thus stats/ability.
-	bool isApple = true;
+	bool isApple = false;
 	bool isBanana = false;
 	bool isWaterMelon = false;
 
-	//Final stats of the different characters
+	//Checkpoint position data
+	b2Vec2 checkPointPos;
 };

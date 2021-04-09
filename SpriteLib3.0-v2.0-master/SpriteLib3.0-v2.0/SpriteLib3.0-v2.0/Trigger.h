@@ -23,6 +23,6 @@ public:
 protected:
 	int m_triggerEntity;
 	std::vector<int> m_targetEntities;
-	bool eneTurn = false;
+	bool eneTurn = true;
 };
 

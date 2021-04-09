@@ -63,6 +63,10 @@ public:
 	void MouseMotion(SDL_MouseMotionEvent evnt);
 	void MouseClick(SDL_MouseButtonEvent evnt);
 	void MouseWheel(SDL_MouseWheelEvent evnt);
+
+	//Scenes
+	Scene* m_activeScene = nullptr;
+	std::vector<Scene*> m_scenes;
 private:
 	//The window
 	Window *m_window = nullptr;
@@ -70,9 +74,7 @@ private:
 	//The main register for our ECS
 	entt::registry* m_register = nullptr;
 
-	//Scenes
-	Scene* m_activeScene = nullptr;
-	std::vector<Scene*> m_scenes;
+
 	
 	//Imgui stuff
 	bool m_guiActive = false;
