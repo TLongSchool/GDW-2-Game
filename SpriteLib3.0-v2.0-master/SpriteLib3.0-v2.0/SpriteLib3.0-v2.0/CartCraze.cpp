@@ -408,6 +408,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<CanJump>(entity);
 			ECS::AttachComponent<PlayerFacing>(entity);
 			ECS::AttachComponent<PlayerStats>(entity);
+			ECS::AttachComponent<CanClimb>(entity);
 
 			//Sets up the components
 			std::string fileName = "apple.png";
@@ -457,6 +458,76 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 				healthSpriteStorage.push_back(entity);
 			}
+			//Heart 2
+			{
+				auto entity = ECS::CreateEntity();
+
+				//Add Components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+
+				std::string fileName = "heartfull.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
+				ECS::GetComponent<Transform>(entity).SetPosition(-250, 180, 10);
+
+				healthSpriteStorage.push_back(entity);
+			}		
+			//Heart 3
+			{
+				auto entity = ECS::CreateEntity();
+
+				//Add Components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+
+				std::string fileName = "heartfull.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
+				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
+
+				healthSpriteStorage.push_back(entity);
+			}
+			//Heart 4
+			{
+				auto entity = ECS::CreateEntity();
+
+				//Add Components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+
+				std::string fileName = "heartfull.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
+				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
+
+				healthSpriteStorage.push_back(entity);
+			}
+			//Heart 5
+			{
+				auto entity = ECS::CreateEntity();
+
+				//Add Components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+
+				std::string fileName = "heartfull.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
+				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
+
+				healthSpriteStorage.push_back(entity);
+			}
+			//Heart 1
+			{
+				auto entity = ECS::CreateEntity();
+
+				//Add Components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+
+				std::string fileName = "heartfull.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
+				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
+
+				healthSpriteStorage.push_back(entity);
+			}
 		}
 
 		//Beginning Platform
@@ -489,6 +560,39 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY | OBJECTS | HEXAGON);
 			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 
+		}
+
+		//Setup ladder trigger
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+			ECS::AttachComponent<Trigger*>(entity);
+
+			//Sets up components
+			std::string fileName = "boxSprite.jpg";
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+			ECS::GetComponent<Trigger*>(entity) = new LadderTrigger();
+			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(climb);
+			LadderTrigger* temp = (LadderTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(295.f), float32(120.f));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(40.f - shrinkX), float(100.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 		}
 
 		//Beginning Platform - First Jump Platform
@@ -1629,6 +1733,18 @@ void CartCraze::Update()
 
 		//Player health check
 		{
+			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isWaterMelon)
+			{
+
+			}
+
+
+			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).isApple)
+			{
+
+			}
+
+
 			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health <= 0)
 			{
 				gameOver = true;
@@ -1858,7 +1974,8 @@ void CartCraze::GUIWindowTwo()
 void CartCraze::KeyboardHold()
 {
 	auto& player = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer());
-
+	auto& canJump = ECS::GetComponent<CanJump>(MainEntities::MainPlayer());
+	auto& canClimb = ECS::GetComponent<CanClimb>(MainEntities::MainPlayer());
 
 	float playerSpeed = ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).speed;
 	float speed = 2.f;
@@ -1880,7 +1997,10 @@ void CartCraze::KeyboardHold()
 
 		if (Input::GetKey(Key::W))
 		{
-
+			if (canClimb.m_canClimb)
+			{
+				player.GetBody()->ApplyForceToCenter(b2Vec2(0.f * speed, 90000000.f), true);
+			}
 		}
 		if (Input::GetKey(Key::S))
 		{
