@@ -1,6 +1,7 @@
 #include "CartCraze.h"
 #include "Utilities.h"
 #include "Trigger.h"
+#include "LadderTrigger.h"
 
 #include <random>
 
@@ -1136,7 +1137,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, OBJECTS | ENEMY | HEXAGON); //Removed PLAYER collision
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | OBJECTS | ENEMY | HEXAGON);
 			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 			tempPhsBody.SetRotationAngleDeg(90.f);
 		}
