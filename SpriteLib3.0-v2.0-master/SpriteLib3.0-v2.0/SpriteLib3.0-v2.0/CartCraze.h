@@ -29,18 +29,25 @@ public:
     void KeyboardDown() override;
     void KeyboardUp() override;
 
+    //Storage vectors
     std::vector<int> projectileStorage;
     std::vector<int> mainMenuButtons;
     std::vector<int> characterSelectButtons;
     std::vector<int> enemyStorage;
     std::vector<int> healthSpriteStorage;
 
+
+    //Gamestate booleans
     bool gameRun = false;
     bool gameOver = false;
     bool gameWin = false;
     bool mainMenu = true;
     bool characterMenu = false;
     bool controlsMenu = false;
+
+    //Sprite filenames
+    std::string heartFull = "heartfull.png";
+    std::string heartEmpty = "heartempty.png";
 
 protected:
     bool m_firstWindow = false;

@@ -132,14 +132,18 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 		}
 	}
 
-	//Finish line check
-	if ((filterA.categoryBits == FINISH) || (filterB.categoryBits == FINISH))
-	{
-		if (filterA.categoryBits == PLAYER)
-		{
-			ECS::GetComponent<PlayerStats>((int)fixtureA->GetBody()->GetUserData()).playerWon = true;
-		}
-	}
+	////finish line check
+	//if ((filtera.categorybits == finish) || (filterb.categorybits == finish))
+	//{
+	//	if (filtera.categorybits == player)
+	//	{
+	//		ecs::getcomponent<playerstats>((int)fixturea->getbody()->getuserdata()).playerwon = true;
+	//	}
+	//	if (filterb.categorybits == player)
+	//	{
+	//		ecs::getcomponent<playerstats>((int)fixtureb->getbody()->getuserdata()).playerwon = true;
+	//	}
+	//}
 }
 
 void CartCrazeListener::EndContact(b2Contact* contact)
