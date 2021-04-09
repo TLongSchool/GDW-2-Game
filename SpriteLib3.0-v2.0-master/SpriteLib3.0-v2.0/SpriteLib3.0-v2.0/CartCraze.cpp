@@ -562,39 +562,6 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		}
 
-		//Setup ladder trigger
-		{
-			//Creates entity
-			auto entity = ECS::CreateEntity();
-
-			//Add components
-			ECS::AttachComponent<Transform>(entity);
-			ECS::AttachComponent<PhysicsBody>(entity);
-			ECS::AttachComponent<Trigger*>(entity);
-
-			//Sets up components
-			std::string fileName = "boxSprite.jpg";
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
-			ECS::GetComponent<Trigger*>(entity) = new LadderTrigger();
-			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
-			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(climb);
-			LadderTrigger* temp = (LadderTrigger*)ECS::GetComponent<Trigger*>(entity);
-
-			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-			float shrinkX = 0.f;
-			float shrinkY = 0.f;
-			b2Body* tempBody;
-			b2BodyDef tempDef;
-			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(295.f), float32(120.f));
-
-			tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-			tempPhsBody = PhysicsBody(entity, tempBody, float(40.f - shrinkX), float(100.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
-			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-		}
-
 		//Beginning Platform - First Jump Platform
 		{
 			//Creates entity
@@ -670,7 +637,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			ECS::AttachComponent<PhysicsBody>(entity);
 
 			//Sets up components
-			std::string fileName = "boxSprite.jpg";
+			std::string fileName = "platform_mk_ii.png";
 			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 400, 10);
 			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
 
@@ -753,6 +720,39 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | OBJECTS | ENEMY | HEXAGON);
 			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 			tempPhsBody.SetRotationAngleDeg(90.f);
+		}
+
+		//Setup ladder trigger
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+			ECS::AttachComponent<Trigger*>(entity);
+
+			//Sets up components
+			std::string fileName = "boxSprite.jpg";
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+			ECS::GetComponent<Trigger*>(entity) = new LadderTrigger();
+			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(climb);
+			LadderTrigger* temp = (LadderTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(580.f), float32(30.f));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(20.f - shrinkX), float(70.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 		}
 
 		//Third Platform
@@ -907,38 +907,6 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
 			tempDef.position.Set(float32(960.f), float32(80.f));
-
-			tempBody = m_physicsWorld->CreateBody(&tempDef);
-
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, GROUND, PLAYER | ENEMY | OBJECTS | HEXAGON);
-			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
-
-		}
-
-		//Item Platform
-		{
-			//Creates entitys
-			auto entity = ECS::CreateEntity();
-
-			//Add components
-			ECS::AttachComponent<Sprite>(entity);
-			ECS::AttachComponent<Transform>(entity);
-			ECS::AttachComponent<PhysicsBody>(entity);
-
-			//Sets up components
-			std::string fileName = "platform_mk_ii.png";
-			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 250, 10);
-			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 2.f));
-
-			auto& tempSpr = ECS::GetComponent<Sprite>(entity);
-			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
-
-			float shrinkX = 0.f;
-			float shrinkY = 0.f;
-			b2Body* tempBody;
-			b2BodyDef tempDef;
-			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(865.f), float32(350.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
@@ -1136,9 +1104,42 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, OBJECTS | ENEMY | HEXAGON); //Removed PLAYER collision
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, ENVIRONMENT, PLAYER | OBJECTS | ENEMY | HEXAGON);
 			tempPhsBody.SetColor(vec4(0.f, 1.f, 0.f, 0.3f));
 			tempPhsBody.SetRotationAngleDeg(90.f);
+		}
+
+		//Setup ladder trigger
+		{
+			//Creates entity
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Transform>(entity);
+			ECS::AttachComponent<PhysicsBody>(entity);
+			ECS::AttachComponent<Trigger*>(entity);
+
+			//Sets up components
+			std::string fileName = "boxSprite.jpg";
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(30.f, -20.f, 80.f));
+			ECS::GetComponent<Trigger*>(entity) = new LadderTrigger();
+			ECS::GetComponent<Trigger*>(entity)->SetTriggerEntity(entity);
+			ECS::GetComponent<Trigger*>(entity)->AddTargetEntity(climb);
+			LadderTrigger* temp = (LadderTrigger*)ECS::GetComponent<Trigger*>(entity);
+
+			auto& tempPhsBody = ECS::GetComponent<PhysicsBody>(entity);
+
+			float shrinkX = 0.f;
+			float shrinkY = 0.f;
+			b2Body* tempBody;
+			b2BodyDef tempDef;
+			tempDef.type = b2_staticBody;
+			tempDef.position.Set(float32(2080.f), float32(55.f));
+
+			tempBody = m_physicsWorld->CreateBody(&tempDef);
+
+			tempPhsBody = PhysicsBody(entity, tempBody, float(20.f - shrinkX), float(120.f - shrinkY), vec2(0.f, 0.f), true, TRIGGER, PLAYER | OBJECTS);
+			tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
 		}
 
 		//Fifth Platform - Top Left Platform On Top Of Ladder
@@ -1164,7 +1165,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			b2Body* tempBody;
 			b2BodyDef tempDef;
 			tempDef.type = b2_staticBody;
-			tempDef.position.Set(float32(2050.f), float32(105.f));
+			tempDef.position.Set(float32(2040.f), float32(105.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
 
