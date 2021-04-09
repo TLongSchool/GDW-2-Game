@@ -242,7 +242,6 @@ unsigned Scene::CreateJuiceProjectile(float posX, float posY) //Setup for the ap
 	else
 	{
 		juiceBody->ApplyLinearImpulseToCenter(b2Vec2(-980000.f, 0.f), true);
-		//ECS::GetComponent<Transform>(entity).SetRotationAngleZ(180.f);
 	}
 	return entity;
 }
@@ -340,16 +339,16 @@ unsigned Scene::CreateCookieEnemy(float posX, float posY, bool eneTurn)
 
 	tempPhsBody = PhysicsBody(entity, tempBody, float(25.f - shrinkX), float(25.f - shrinkY), vec2(0.f, 0.f), false, ENEMY, PLAYER | GROUND | PROJECTILE | FRIENDLY);
 	tempPhsBody.SetColor(vec4(1.f, 0.f, 0.f, 0.3f));
-	tempPhsBody.SetGravityScale(0.f);
+	tempPhsBody.SetGravityScale(0.5f);
 
 	if (eneTurn == false)
 	{
-		tempBody->ApplyLinearImpulseToCenter(b2Vec2(-35000.f, 0.f), true);
+		tempBody->ApplyLinearImpulseToCenter(b2Vec2(-350000.f, 0.f), true);
 	}
 	
 	else if (eneTurn == true)
 	{
-		tempBody->ApplyLinearImpulseToCenter(b2Vec2(35000.f, 0.f), true);
+		tempBody->ApplyLinearImpulseToCenter(b2Vec2(350000.f, 0.f), true);
 	}
 
 	return entity;

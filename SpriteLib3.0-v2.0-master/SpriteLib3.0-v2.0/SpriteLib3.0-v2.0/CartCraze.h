@@ -33,6 +33,7 @@ public:
 	std::vector<int> mainMenuButtons;
 	std::vector<int> characterSelectButtons;
 	std::vector<int> enemyStorage;
+	std::vector<int> healthSpriteStorage;
 
 	bool gameRun = false;
 	bool gameOver = false;
@@ -61,6 +62,8 @@ protected:
 	unsigned mainMenuCamera = -1;
 	unsigned controlsMenuCamera = -1;
 	unsigned characterMenuCamera = -1;
+	unsigned victoryScreenCamera = -1;
+	unsigned gameOverCamera = -1;
 
 	//int puzzleWall1;
 	//int puzzleWall2;

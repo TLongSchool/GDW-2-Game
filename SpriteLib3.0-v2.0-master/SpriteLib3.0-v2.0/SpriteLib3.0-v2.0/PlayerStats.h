@@ -8,6 +8,8 @@ public:
 	int lives = 3; //Lives start at the same value for all characters
 	float speed = 350000; 
 	bool isFrozen = false;
+	bool playerWon = false;
+	bool playerLost = false;
 
 	//Bools to determine character type and thus stats/ability.
 	bool isApple = false;

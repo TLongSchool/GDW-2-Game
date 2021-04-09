@@ -334,6 +334,62 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 		}
 	}
 
+	//Victory Screen
+	{
+		//Victory screen camera target
+		{
+			auto entity = ECS::CreateEntity();
+			victoryScreenCamera = entity;
+
+			ECS::AttachComponent<Transform>(entity);
+
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000.f, 0.f, 0.f));
+		}
+
+		//Victory screen entity
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+
+			//Set up components
+			std::string fileName = "controlswide.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 850.f, 430.f);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-50000, 0.f, 0.f));
+		}
+	}
+
+	//Game Over Screen
+	{
+		//Game over camera target
+		{
+			auto entity = ECS::CreateEntity();
+			gameOverCamera = entity;
+
+			ECS::AttachComponent<Transform>(entity);
+
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000.f, 0.f, 0.f));
+		}
+
+		//Game over entity
+		{
+			auto entity = ECS::CreateEntity();
+
+			//Add components
+			ECS::AttachComponent<Sprite>(entity);
+			ECS::AttachComponent<Transform>(entity);
+
+			//Set up components
+			std::string fileName = "controlswide.png";
+			ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 850.f, 430.f);
+			ECS::GetComponent<Sprite>(entity).SetTransparency(1.f);
+			ECS::GetComponent<Transform>(entity).SetPosition(vec3(-40000, 0.f, 0.f));
+		}
+	}
+
 
 	//Main Game
 	{
@@ -385,7 +441,23 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 
 		}
 
+		//Player health bar
+		{
+			//Heart 1
+			{
+				auto entity = ECS::CreateEntity();
 
+				//Add Components
+				ECS::AttachComponent<Sprite>(entity);
+				ECS::AttachComponent<Transform>(entity);
+
+				std::string fileName = "heartfull.png";
+				ECS::GetComponent<Sprite>(entity).LoadSprite(fileName, 50, 50);
+				ECS::GetComponent<Transform>(entity).SetPosition(-300, 180, 10);
+
+				healthSpriteStorage.push_back(entity);
+			}
+		}
 
 		//Beginning Platform
 		{
@@ -1471,6 +1543,18 @@ void CartCraze::Update()
 		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(characterMenuCamera));
 	}
 
+	if (gameOver == true)
+	{
+		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOverCamera));
+		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(gameOverCamera));
+	}
+
+	if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).playerWon == true)
+	{
+		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
+		ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
+	}
+
 	if (gameRun == true)
 	{
 		ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(MainEntities::MainPlayer()));
@@ -1541,6 +1625,14 @@ void CartCraze::Update()
 		//Player stun check
 		{
 
+		}
+
+		//Player health check
+		{
+			if (ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).health <= 0)
+			{
+				gameOver = true;
+			}
 		}
 	}
 
@@ -2104,12 +2196,21 @@ void CartCraze::KeyboardDown()
 	}
 	if (Input::GetKeyDown(Key::J))
 	{
-		player.SetPosition(ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).checkPointPos);
-		player.SetVelocity(vec3(0, 0, 0));
+		gameRun = false;
+		mainMenu = false;
+		controlsMenu = false;
+		characterMenu = false;
+		ECS::GetComponent<PlayerStats>(MainEntities::MainPlayer()).playerWon == true;
+		gameOver = false;
 	}
 	if (Input::GetKeyDown(Key::K))
 	{
-		
+		gameRun = false;
+		mainMenu = false;
+		controlsMenu = false;
+		characterMenu = false;
+		gameWin = false;
+		gameOver = true;
 	}
 }
 

@@ -137,7 +137,7 @@ void CartCrazeListener::BeginContact(b2Contact* contact)
 	{
 		if (filterA.categoryBits == PLAYER)
 		{
-
+			ECS::GetComponent<PlayerStats>((int)fixtureA->GetBody()->GetUserData()).playerWon = true;
 		}
 	}
 }
