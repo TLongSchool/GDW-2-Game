@@ -1437,7 +1437,7 @@ void CartCraze::InitScene(float windowWidth, float windowHeight)
 			tempDef.position.Set(float32(3100.f), float32(-120.f));
 
 			tempBody = m_physicsWorld->CreateBody(&tempDef);
-			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), true, FINISH, PLAYER);
+			tempPhsBody = PhysicsBody(entity, tempBody, float(tempSpr.GetWidth() - shrinkX), float(tempSpr.GetHeight() - shrinkY), vec2(0.f, 0.f), false, FINISH, PLAYER);
 			tempPhsBody.SetColor(vec4(20.f, 1.f, 19.f, 5.f));
 
 		}
@@ -1757,15 +1757,14 @@ void CartCraze::Update()
 			}
 
 		}
-		b2Vec2 playerPosition = ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition();
-		if (playerPosition.x > -3100);
+		if (ECS::GetComponent<PhysicsBody>(MainEntities::MainPlayer()).GetPosition().x > 3060)
 		{
 			ECS::GetComponent<Sprite>(healthSpriteStorage[0]).SetTransparency(0.f);
 			ECS::GetComponent<Sprite>(healthSpriteStorage[1]).SetTransparency(0.f);
 			ECS::GetComponent<Sprite>(healthSpriteStorage[2]).SetTransparency(0.f);
 			ECS::GetComponent<Sprite>(healthSpriteStorage[3]).SetTransparency(0.f);
-			gameWin == true;
-			gameRun == false;
+			gameWin = true;
+			gameRun = false;
 			ECS::GetComponent<HorizontalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
 			ECS::GetComponent<VerticalScroll>(MainEntities::MainCamera()).SetFocus(&ECS::GetComponent<Transform>(victoryScreenCamera));
 		}
